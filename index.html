@@ -172,7 +172,7 @@
   dd { margin: 0; }
   .map { margin-top: 48px; height: 420px; background: var(--tint); box-shadow: 0 0 0 100vmax var(--tint); clip-path: inset(0 -100vmax); display: grid; place-items: center; color: var(--muted); }
   .map p { margin: 0; }
-  .map iframe { width: 100vw; max-width: none; height: 100%; border: 0; margin-left: calc(50% - 50vw); }
+  .map iframe { width: 100vw; max-width: none; height: 100%; border: 0; margin-left: calc(50% - 50vw); justify-self: start; }
   .transit-title { font-size: 24px; margin: 40px 0 16px; }
   .transit { grid-template-columns: 5.5em 1fr; }
 
@@ -384,9 +384,9 @@
       <div>
         <h2 data-i18n="visit_title">到店資訊</h2>
         <dl>
-          <dt data-i18n="v_addr">地址</dt><dd data-i18n="v_addr_t"><span class="fill">【台中市○○區○○路○號】</span></dd>
-          <dt data-i18n="v_hours">營業時間</dt><dd data-i18n="v_hours_t"><span class="fill">【例如 週一至週六 9:00–20:00】</span></dd>
-          <dt data-i18n="v_phone">電話</dt><dd><span class="fill">【04-○○○○○○○○】</span></dd>
+          <dt data-i18n="v_addr">地址</dt><dd data-i18n="v_addr_t">台中市霧峰區北豐路53號</dd>
+          <dt data-i18n="v_hours">營業時間</dt><dd data-i18n="v_hours_t">週一至週六 9:00–17:30（週日公休）</dd>
+          <dt data-i18n="v_phone">電話</dt><dd data-i18n="v_phone_t"><a href="tel:+886423399125">04-2339-9125</a></dd>
           <dt data-i18n="v_park">停車</dt><dd data-i18n="v_park_t">本店有停車位，開車來很方便 <span class="fill">【可補上幾個車位、位置】</span></dd>
         </dl>
       </div>
@@ -395,15 +395,13 @@
         <div class="actions">
           <!-- 【LINE 官方按鈕】把 LINE 官方帳號後台「製作按鈕」產生的程式碼貼在這行下面，再刪掉下一行的暫時按鈕 -->
           <a class="btn btn-main" href="#" data-line data-i18n="v_line">加 LINE 好友</a>
-          <!-- 【導航連結】把 Google 地圖「分享 → 複製連結」的網址貼進下一行的 href="#" -->
-          <a class="btn btn-sub" href="#" data-i18n="v_map">用 Google 地圖導航</a>
+          <a class="btn btn-sub" href="https://maps.app.goo.gl/yS3kvHSHHgcw8iLw5" target="_blank" rel="noopener" data-i18n="v_map">用 Google 地圖導航</a>
         </div>
       </div>
     </div>
 
     <div class="map">
-      <!-- 【Google 地圖】把 Google 地圖「分享 → 嵌入地圖 → 複製 HTML」的程式碼貼在這行下面，再刪掉下一行的提示文字 -->
-      <p data-i18n="map_ph">【這裡會顯示 Google 地圖】</p>
+      <iframe src="https://www.google.com/maps?q=%E7%A6%BE%E5%9C%92%E9%B3%A5%E5%9D%8A+%E5%8F%B0%E4%B8%AD%E5%B8%82%E9%9C%A7%E5%B3%B0%E5%8D%80%E5%8C%97%E8%B1%90%E8%B7%AF53%E8%99%9F&output=embed" loading="lazy" title="禾園鳥坊地圖"></iframe>
     </div>
 
     <h3 class="transit-title" data-i18n="transit_title">交通方式</h3>
@@ -479,13 +477,12 @@ var EN = {
   trade_btn: "Contact Us on LINE",
   trade_mail: 'Email: <span class="fill">[Trade contact email]</span>',
   visit_title: "Visit Us",
-  v_addr: "Address", v_addr_t: '<span class="fill">[Address in English]</span>',
-  v_hours: "Hours", v_hours_t: '<span class="fill">[e.g. Mon\u2013Sat 9:00\u201320:00]</span>',
-  v_phone: "Phone",
+  v_addr: "Address", v_addr_t: "No. 53, Beifeng Rd., Wufeng Dist., Taichung City 413, Taiwan",
+  v_hours: "Hours", v_hours_t: "Mon\u2013Sat 9:00\u201317:30 (Closed on Sundays)",
+  v_phone: "Phone", v_phone_t: '<a href="tel:+886423399125">+886-4-2339-9125</a>',
   v_park: "Parking", v_park_t: 'Parking available at our shop <span class="fill">[Number of spaces / location]</span>',
   visit_lead: "Message us on LINE, or get directions with Google Maps.",
   v_line: "Add Us on LINE", v_map: "Get Directions",
-  map_ph: "[Google Map]",
   transit_title: "Getting Here",
   t_bus: "Bus", t_bus_t: '<span class="fill">[Bus routes and stop]</span>',
   t_car: "By Car", t_car_t: 'Parking available right at our door <span class="fill">[Where to park]</span>',
