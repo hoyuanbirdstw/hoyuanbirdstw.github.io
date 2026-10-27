@@ -30,7 +30,8 @@ photos/      其他照片：hero.jpg（首頁主視覺）、shop-01.jpg ~ shop-0
 
 `#top` 首頁 → `#birds` 在店鳥寶 → `#supplies` 鳥用品 → `#knowledge` 養鳥知識 → `#about` 關於本店 → `#gallery` 店面照片 → `#trade` 進出口貿易 → `#visit` 到店資訊
 
-- 用 Font Awesome 6.5.2（cdnjs）當圖示
+- 圖示全部是內嵌 SVG，沒有載入 Font Awesome。頁尾的 Facebook、LINE 圖示取自 Font Awesome Free 6.5.2（CC BY 4.0），程式碼裡留有出處註解，改動時請保留。要新增圖示就直接貼 SVG，不要再引入外部圖示字型
+- 響應式斷點：寬度 ≤1020px 時上方選單改成「☰ 選單」按鈕，點開後直向排列，點選項目、點外面、按 Esc 會收起；≤900px 時主視覺改成上圖下字（文字放在深色底，避免壓在鳥臉上），小幫手在主視覺還大部分在畫面內時會先收起。調整版面後請在 320、375、414、768、1024、1440 寬度檢查中英文兩版，不能有橫向捲軸，手機上可點的地方至少 44px 高
 - 頁面中有底色的 `<span class="fill">【...】</span>` 是**待補的佔位文字**（開店年份、地址、營業時間、電話等），店家提供資料後要換掉，中英文兩邊都要換
 - LINE 連結：頁面右下角 `#helper` 的 `href` 是全站 LINE 按鈕的單一來源，所有帶 `data-line` 的連結會自動沿用。要設定 LINE，只改 `#helper` 的 `href`
 - 頁尾的 Facebook / Instagram / LINE 圖示 `href` 目前都是 `#`，待填
