@@ -173,6 +173,9 @@
   .map { margin-top: 48px; height: 420px; background: var(--tint); box-shadow: 0 0 0 100vmax var(--tint); clip-path: inset(0 -100vmax); display: grid; place-items: center; color: var(--muted); }
   .map p { margin: 0; }
   .map iframe { width: 100vw; max-width: none; height: 100%; border: 0; margin-left: calc(50% - 50vw); justify-self: start; }
+  .rating { display: inline-block; margin: 0 0 18px; font-size: 16px; color: var(--ink); text-decoration: none; }
+  .rating:hover { text-decoration: underline; }
+  .rating .star { color: #F0A624; }
   .transit-title { font-size: 24px; margin: 40px 0 16px; }
   .transit { grid-template-columns: 5.5em 1fr; }
 
@@ -383,11 +386,12 @@
     <div class="visit">
       <div>
         <h2 data-i18n="visit_title">到店資訊</h2>
+        <a class="rating" href="https://maps.app.goo.gl/yS3kvHSHHgcw8iLw5" target="_blank" rel="noopener" data-i18n="v_rating"><span class="star" aria-hidden="true">★</span> 4.6 Google 評分（145 則評論）</a>
         <dl>
           <dt data-i18n="v_addr">地址</dt><dd data-i18n="v_addr_t">台中市霧峰區北豐路53號</dd>
           <dt data-i18n="v_hours">營業時間</dt><dd data-i18n="v_hours_t">週一至週六 9:00–17:30（週日公休）</dd>
           <dt data-i18n="v_phone">電話</dt><dd data-i18n="v_phone_t"><a href="tel:+886423399125">04-2339-9125</a></dd>
-          <dt data-i18n="v_park">停車</dt><dd data-i18n="v_park_t">本店有停車位，開車來很方便 <span class="fill">【可補上幾個車位、位置】</span></dd>
+          <dt data-i18n="v_park">停車</dt><dd data-i18n="v_park_t">店門口可停約 3–4 台車</dd>
         </dl>
       </div>
       <div>
@@ -406,9 +410,8 @@
 
     <h3 class="transit-title" data-i18n="transit_title">交通方式</h3>
     <dl class="transit">
-      <dt data-i18n="t_bus">公車</dt><dd data-i18n="t_bus_t"><span class="fill">【例如：台中火車站搭 ○○ 號公車，在 ○○ 站下車，步行約 ○ 分鐘】</span></dd>
-      <dt data-i18n="t_car">開車</dt><dd data-i18n="t_car_t">本店有停車位，可直接開到店門口 <span class="fill">【車位位置或怎麼進出】</span></dd>
-      <dt data-i18n="t_scooter">機車</dt><dd data-i18n="t_scooter_t"><span class="fill">【店門口能不能停機車】</span></dd>
+      <dt data-i18n="t_tips">建議</dt><dd data-i18n="t_tips_t">本店位於霧峰郊區，大眾運輸較不方便，建議開車或騎機車前往，可用上方的 Google 地圖導航。</dd>
+      <dt data-i18n="v_park">停車</dt><dd data-i18n="v_park_t">店門口可停約 3–4 台車</dd>
     </dl>
   </section>
 
@@ -418,17 +421,15 @@
   <div class="wrap">
     <h2 class="follow-title" data-i18n="follow">關注我們</h2>
     <ul class="social">
-      <!-- 把每個 href="#" 換成你們的粉專、IG、LINE 網址 -->
-      <li><a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook" aria-hidden="true"></i></a></li>
-      <li><a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram" aria-hidden="true"></i></a></li>
-      <li><a href="#" aria-label="LINE"><i class="fa-brands fa-line" aria-hidden="true"></i></a></li>
+      <li><a href="https://www.facebook.com/share/1EBhryXe36/" target="_blank" rel="noopener" aria-label="Facebook"><i class="fa-brands fa-facebook" aria-hidden="true"></i></a></li>
+      <li><a href="#" data-line aria-label="LINE"><i class="fa-brands fa-line" aria-hidden="true"></i></a></li>
     </ul>
     <p class="copy" data-i18n="copy">© 禾園鳥坊</p>
   </div>
 </footer>
 
-<!-- 【小幫手按鈕】把 href="#" 換成你們 LINE 官方帳號的網址，全站的 LINE 按鈕會自動跟著換 -->
-<a class="helper" id="helper" href="#" data-line aria-label="LINE">
+<!-- 【小幫手按鈕】這個 href 是全站 LINE 連結的來源，帶 data-line 的按鈕（含頁尾 LINE 圖示）會自動跟著換 -->
+<a class="helper" id="helper" href="https://lin.ee/Vwu8NPG" data-line aria-label="LINE">
   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3C6.5 3 2 6.6 2 11c0 2.5 1.5 4.8 3.8 6.3L5 21l4.2-2.4c.9.2 1.8.3 2.8.3 5.5 0 10-3.6 10-8S17.5 3 12 3z"/><circle cx="8" cy="11" r="1.3" fill="var(--btn-bg)"/><circle cx="12" cy="11" r="1.3" fill="var(--btn-bg)"/><circle cx="16" cy="11" r="1.3" fill="var(--btn-bg)"/></svg>
   <span data-i18n="helper">問小幫手</span>
 </a>
@@ -480,13 +481,12 @@ var EN = {
   v_addr: "Address", v_addr_t: "No. 53, Beifeng Rd., Wufeng Dist., Taichung City 413, Taiwan",
   v_hours: "Hours", v_hours_t: "Mon\u2013Sat 9:00\u201317:30 (Closed on Sundays)",
   v_phone: "Phone", v_phone_t: '<a href="tel:+886423399125">+886-4-2339-9125</a>',
-  v_park: "Parking", v_park_t: 'Parking available at our shop <span class="fill">[Number of spaces / location]</span>',
+  v_park: "Parking", v_park_t: "Parking for about 3–4 cars right at our door",
+  v_rating: '<span class="star" aria-hidden="true">★</span> 4.6 on Google (145 reviews)',
   visit_lead: "Message us on LINE, or get directions with Google Maps.",
   v_line: "Add Us on LINE", v_map: "Get Directions",
   transit_title: "Getting Here",
-  t_bus: "Bus", t_bus_t: '<span class="fill">[Bus routes and stop]</span>',
-  t_car: "By Car", t_car_t: 'Parking available right at our door <span class="fill">[Where to park]</span>',
-  t_scooter: "Scooter", t_scooter_t: '<span class="fill">[Scooter parking]</span>',
+  t_tips: "Tips", t_tips_t: "We’re in suburban Wufeng and public transport is limited, so we recommend coming by car or scooter. Use the Google Maps button above for directions.",
   follow: "Follow Us", copy: "\u00a9 Hoyuan Birds", helper: "Ask Us",
   // 販售鳥類的固定文字
   s_avail: "Available", s_reserved: "Reserved", s_sold: "Sold", ask_price: "Ask in store for price"
