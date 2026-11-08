@@ -1,0 +1,3 @@
+# Agent skills installed locally (not part of the site)
+.agents/
+.claude/skills/
