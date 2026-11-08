@@ -24,6 +24,8 @@ index.html   整個網站（HTML + CSS + JS 都在這一個檔案）
 birds.js     在店鳥類清單（資料檔，店家最常改的檔案）
 birds/       鳥的照片（檔名用英文或數字，例如 bunchou-01.jpg）
 photos/      其他照片：hero.jpg（首頁主視覺）、shop-01.jpg ~ shop-05.jpg（店面照片，目前尚未放入）
+supabase-config.js   Supabase 連線設定（Project URL + Publishable key），網站和後台頁面都讀它
+supabase/setup.sql   Supabase 資料庫設定（資料表、權限、照片空間），在 Supabase SQL Editor 執行
 ```
 
 `index.html` 由上到下的區塊（錨點 id）：
@@ -65,6 +67,39 @@ photos/      其他照片：hero.jpg（首頁主視覺）、shop-01.jpg ~ shop-0
 - 每組 `{ }` 後面要加逗號，最後一組可以不加
 - `"已售出"` 的鳥會顯示價格欄為 Sold／已售出，並套用 sold 樣式
 - 目前 `birds.js` 裡三筆是「範例：」開頭的假資料，要換成店裡實際的鳥
+
+## Supabase（在店鳥寶後台，建置中）
+
+目標：讓家人用手機登入後台頁面上架「在店鳥寶」，取代手動改 `birds.js`。
+
+**目前進度：只完成資料庫設定。** `index.html` 還是讀 `birds.js`，後台頁面和網站改讀 Supabase 都還沒做。改網站之前，`birds.js` 要繼續保留可用。
+
+### 架構
+
+- Supabase 專案：`https://kxaqytzfufaltpgmtrks.supabase.co`
+- 連線設定放在 `supabase-config.js`（`window.SUPABASE_CONFIG`：`url`、`publishableKey`、`birdsTable`、`photoBucket`）。網站和後台頁面都讀這個檔案，要換專案只改這裡。因為是純靜態網站，沒有 `.env`，也不用 `NEXT_PUBLIC_` 前綴
+- `supabase/setup.sql` 是資料庫的單一來源，可重複執行（不會重複建立、不會刪資料）。改資料表、權限或照片空間時，改這份檔案，再到 Supabase 後台 SQL Editor 執行。Claude 沒有 Supabase 後台權限，不會替使用者執行它
+
+### setup.sql 的內容
+
+- 資料表 `birds`：`id`（uuid）、`name`（中文名稱，必填）、`name_en`、`description`、`description_en`、`price`、`status`、`photo_url`、`sort_order`、`created_at`、`updated_at`（修改時由觸發器自動更新）
+- `status` 只能是 `在店`、`已預訂`、`已售出`，預設 `在店`（和 `birds.js` 的 status 一致）
+- 與 `birds.js` 欄位對照：`name`→`name`、`name_en`→`name_en`、`desc`→`description`、`desc_en`→`description_en`、`price`→`price`、`photo`→`photo_url`、`status`→`status`。網站改讀 Supabase 時，要在前端把 `description` 對回頁面用的 `desc`
+- 權限（RLS）：所有人（含沒登入的訪客）可讀；只有登入的使用者可新增、修改、刪除
+- 照片空間 `bird-photos`：公開讀取（用照片網址就能顯示）；只有登入的使用者可上傳、修改、刪除；單張上限 5MB；只收 jpg、png、webp、gif（不收 SVG 和 HEIC，所以後台上傳前要把 iPhone 的 HEIC 轉成 jpg）
+
+### 登入與帳號
+
+- 「登入的使用者」就是有權限改資料的人，所以 Supabase 後台必須**關閉公開註冊**（Authentication → Sign In / Providers → 關閉 Allow new users to sign up），並由使用者手動建立家人的帳號。不關的話，任何人都能自己註冊並改資料
+- 不要開啟 Anonymous sign-ins（匿名登入也算 `authenticated`）
+
+### 金鑰規則（重要）
+
+這是 **public repo**，放進去的東西全世界都看得到。
+
+- `supabase-config.js` 只能放 Project URL 和 **Publishable key**（`sb_publishable_` 開頭）。Publishable key 設計上就是給瀏覽器用的，能做什麼完全由 RLS 決定
+- **Secret key（`sb_secret_` 開頭）、`service_role` key、資料庫密碼絕對不能放進專案**：不能寫在任何檔案、commit、CLAUDE.md、註解或截圖裡，也不要貼給任何人。它們能繞過所有 RLS 權限。使用者若貼出這類金鑰，先提醒他到 Supabase 後台重新產生（作廢舊的），不要寫進檔案
+- 寫前端程式只能用 `window.SUPABASE_CONFIG.publishableKey`；需要管理員權限的事，請使用者到 Supabase 後台操作，不要用 secret key 在網頁裡做
 
 ## 英文翻譯
 
