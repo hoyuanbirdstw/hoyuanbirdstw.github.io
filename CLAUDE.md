@@ -26,6 +26,9 @@ birds/       鳥的照片（檔名用英文或數字，例如 bunchou-01.jpg）
 photos/      其他照片：hero.jpg（首頁主視覺）、shop-01.jpg ~ shop-05.jpg（店面照片，目前尚未放入）
 supabase-config.js   Supabase 連線設定（Project URL + Publishable key），網站和後台頁面都讀它
 supabase/setup.sql   Supabase 資料庫設定（資料表、權限、照片空間），在 Supabase SQL Editor 執行
+admin.html           後台頁面（家人用手機上架「在店鳥寶」），網站上沒有連結，見下方「後台 admin.html」
+admin.webmanifest    後台的 PWA 設定（名稱「禾園鳥坊後台」，加到主畫面後全螢幕）
+admin-icons/         後台圖示：icon-192.png、icon-512.png、apple-touch-icon.png（由店徽產生）
 ```
 
 `index.html` 由上到下的區塊（錨點 id）：
@@ -72,7 +75,7 @@ supabase/setup.sql   Supabase 資料庫設定（資料表、權限、照片空�
 
 目標：讓家人用手機登入後台頁面上架「在店鳥寶」，取代手動改 `birds.js`。
 
-**目前進度：只完成資料庫設定。** `index.html` 還是讀 `birds.js`，後台頁面和網站改讀 Supabase 都還沒做。改網站之前，`birds.js` 要繼續保留可用。
+**目前進度：資料庫設定、後台頁面 `admin.html` 都完成了。** `index.html` 還是讀 `birds.js`，網站改讀 Supabase 還沒做。改網站之前，`birds.js` 要繼續保留可用。
 
 ### 架構
 
@@ -100,6 +103,19 @@ supabase/setup.sql   Supabase 資料庫設定（資料表、權限、照片空�
 - `supabase-config.js` 只能放 Project URL 和 **Publishable key**（`sb_publishable_` 開頭）。Publishable key 設計上就是給瀏覽器用的，能做什麼完全由 RLS 決定
 - **Secret key（`sb_secret_` 開頭）、`service_role` key、資料庫密碼絕對不能放進專案**：不能寫在任何檔案、commit、CLAUDE.md、註解或截圖裡，也不要貼給任何人。它們能繞過所有 RLS 權限。使用者若貼出這類金鑰，先提醒他到 Supabase 後台重新產生（作廢舊的），不要寫進檔案
 - 寫前端程式只能用 `window.SUPABASE_CONFIG.publishableKey`；需要管理員權限的事，請使用者到 Supabase 後台操作，不要用 secret key 在網頁裡做
+
+## 後台 admin.html
+
+- 網址：https://hoyuanbirdstw.github.io/admin.html（網站上不放連結，有 `noindex`，也刻意不加 `robots.txt`，免得把網址寫出來）
+- 登入：Email + 密碼，帳號由 Supabase 後台 Authentication → Users 手動建立。登入狀態由 supabase-js 存在瀏覽器，右上角顯示帳號和「登出」
+- 清單：依 `sort_order`、再依 `created_at`（新的在前）排序。點狀態腳環切換「在店 → 已預訂 → 已售出」，立刻存檔。「上移／下移」會先把全部重新編號成 0、1、2…再交換（因為舊資料的 `sort_order` 都是 0）。新增的鳥放最上面（`sort_order` = 目前最小值 − 1）
+- 新增／編輯：整頁（網址 hash：`#/new`、`#/edit/<id>`）。名稱必填；英文名稱、英文介紹收在「英文（選填）」。按「儲存」後按鈕停用並顯示「上傳中…」；有未儲存的變更時按返回、瀏覽器返回、登出、關閉頁面都會先問「還沒儲存，確定要離開嗎？」
+- 刪除：跳出確認，先刪資料列，再刪 Storage 照片檔
+- 照片：上傳前在瀏覽器壓縮成最長邊 1600px 的 JPEG，盡量小於 500KB。HEIC／HEIF 先用 heic2any 轉 JPEG（選到 HEIC 才載入）。每次上傳用新檔名 `bird-<時間>-<隨機>.jpg`，不覆蓋（所以 Storage 只需要 insert／delete 權限）。換照片時順序是：傳新圖 → 更新資料列 → 刪舊圖；更新失敗會把剛傳的新圖刪掉
+- 外部函式庫（jsDelivr，固定版本＋SRI 雜湊）：`@supabase/supabase-js@2.118.0`、`heic2any@0.0.4`。升級時要同時換 URL 和 `integrity`（用 `curl` 下載後 `openssl dgst -sha384 -binary | openssl base64 -A` 算），並選發布超過兩週的版本（`npm view <套件> time`）
+- 只使用 `window.SUPABASE_CONFIG` 的 Project URL 和 Publishable key，不放任何 secret key。Supabase 的 `update`／`delete` 被 RLS 擋住時不會報錯、只是回傳 0 筆，所以程式有用 `.select('id')` 檢查回傳筆數
+- 加到手機主畫面：iPhone 用 Safari「分享 → 加入主畫面」；Android 用 Chrome 選單「加到主畫面」。圖示是店徽，開啟時全螢幕
+- 修改後台後，用 Playwright 開 `admin.html` 檢查 320、375、414、768、1024 寬度沒有橫向捲軸、按鈕至少 48px。要測登入後的畫面時，攔截 supabase-js 的 URL 換成假的 `window.supabase`（同時要拿掉 `<script>` 的 `integrity`，否則會被擋）。真正的登入、上傳、刪除要用真帳號手動測
 
 ## 英文翻譯
 

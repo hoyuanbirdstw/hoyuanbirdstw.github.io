@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>禾園鳥坊後台</title>
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="theme-color" content="#1A1718">
+<link rel="manifest" href="admin.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="admin-icons/icon-192.png">
+<link rel="apple-touch-icon" href="admin-icons/apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="鳥坊後台">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<style>
+  /* 配色沿用網站 index.html：黑、鳥嘴橘、地球灰藍；深色模式跟著手機系統 */
+  :root {
+    --bg: #FFFFFF;
+    --ink: #1A1718;
+    --muted: #5E6466;
+    --link: #C7390A;
+    --line: #D5DADB;
+    --tint: #EDF3F4;
+    --btn-bg: #C7390A;
+    --btn-ink: #FFFFFF;
+    --danger: #B3261E;
+    --head-bg: #1A1718;
+    --head-ink: #F2EFEF;
+    --head-muted: #A9B3B5;
+    --board: #84A2A7;
+    /* 狀態腳環：顏色與 index.html 的 .badge 一致（在店用主色，會隨深色模式變） */
+    --st-avail-bg: var(--btn-bg);       --st-avail-ink: var(--btn-ink);
+    --st-reserved-bg: #F0A624;          --st-reserved-ink: #1A1718;
+    --st-sold-bg: #6B6B6B;              --st-sold-ink: #FFFFFF;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #121011;
+      --ink: #F2EFEF;
+      --muted: #A9B3B5;
+      --link: #F0A624;
+      --line: #3A3536;
+      --tint: #172022;
+      --btn-bg: #F0A624;
+      --btn-ink: #121011;
+      --danger: #FF8A80;
+      --head-bg: #1D1A1B;
+      color-scheme: dark;
+    }
+  }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: Arial, "Microsoft JhengHei", "微軟正黑體", "PingFang TC", "Noto Sans TC", sans-serif;
+    font-size: 18px; line-height: 1.6;
+    -webkit-tap-highlight-color: transparent;
+  }
+  button, input, textarea, select { font: inherit; color: inherit; }
+  :focus-visible { outline: 3px solid var(--link); outline-offset: 2px; }
+
+  /* ---------- 按鈕 ---------- */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    min-height: 52px; padding: 0 22px; border-radius: 10px;
+    border: 2px solid var(--ink); background: var(--bg); color: var(--ink);
+    font-weight: 700; font-size: 18px; cursor: pointer; text-decoration: none;
+  }
+  .btn:disabled { opacity: .45; cursor: not-allowed; }
+  .btn-primary { background: var(--btn-bg); border-color: var(--btn-bg); color: var(--btn-ink); }
+  .btn-danger { border-color: var(--danger); color: var(--danger); }
+  .btn-block { width: 100%; }
+  .btn svg { width: 22px; height: 22px; flex: none; }
+
+  /* ---------- 上方列 ---------- */
+  .top {
+    position: sticky; top: 0; z-index: 20;
+    background: var(--head-bg); color: var(--head-ink);
+    padding: calc(8px + env(safe-area-inset-top)) 16px 8px;
+    display: grid; grid-template-columns: 1fr auto; grid-template-areas: "brand out" "who who";
+    align-items: center; column-gap: 12px; row-gap: 0;
+  }
+  .brand { grid-area: brand; display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .brand img { width: 40px; height: 40px; border-radius: 8px; background: #fff; flex: none; }
+  .brand b { font-size: 19px; white-space: nowrap; }
+  .who { grid-area: who; color: var(--head-muted); font-size: 16px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  #logout { grid-area: out; min-height: 48px; padding: 0 18px; border-color: var(--head-muted); background: transparent; color: var(--head-ink); }
+  @media (min-width: 640px) {
+    .top { grid-template-columns: 1fr auto auto; grid-template-areas: "brand who out"; padding-left: 24px; padding-right: 24px; }
+    .who { max-width: 340px; }
+  }
+
+  main { max-width: 720px; margin: 0 auto; padding: 16px 16px calc(112px + env(safe-area-inset-bottom)); }
+  h1 { font-size: 24px; line-height: 1.3; margin: 8px 0 14px; }
+  .muted { color: var(--muted); }
+
+  /* ---------- 提示 ---------- */
+  .toast {
+    position: fixed; left: 50%; top: calc(76px + env(safe-area-inset-top)); z-index: 50;
+    transform: translate(-50%, -12px); opacity: 0; pointer-events: none;
+    max-width: calc(100% - 32px); padding: 12px 22px; border-radius: 10px;
+    background: var(--ink); color: var(--bg); font-weight: 700; text-align: center;
+    transition: opacity .2s, transform .2s;
+  }
+  .toast.show { opacity: 1; transform: translate(-50%, 0); }
+  .toast.error { background: var(--danger); color: #fff; }
+  @media (prefers-color-scheme: dark) { .toast.error { color: #121011; } }
+  .msg { padding: 12px 14px; border-radius: 10px; border: 2px solid var(--danger); color: var(--danger); font-weight: 700; margin: 12px 0; }
+
+  /* ---------- 登入 ---------- */
+  .login { max-width: 420px; margin: 0 auto; padding: calc(32px + env(safe-area-inset-top)) 20px 40px; }
+  .login-logo { display: block; width: 88px; height: 88px; border-radius: 18px; margin: 0 auto 14px; background: #fff; }
+  .login h1 { text-align: center; margin-top: 0; }
+  .login .sub { text-align: center; margin: -6px 0 22px; color: var(--muted); }
+  .field { margin: 0 0 18px; }
+  .field > label, .field > .lab { display: block; font-weight: 700; margin-bottom: 6px; }
+  .field .hint { font-weight: 400; color: var(--muted); font-size: 16px; }
+  .input {
+    width: 100%; min-height: 52px; padding: 10px 14px; border: 2px solid var(--line); border-radius: 10px;
+    background: var(--bg); font-size: 18px; line-height: 1.4;
+  }
+  textarea.input { min-height: 96px; resize: vertical; }
+  .input:focus { border-color: var(--link); outline: none; box-shadow: 0 0 0 3px color-mix(in srgb, var(--link) 25%, transparent); }
+  .pw { position: relative; }
+  .pw .input { padding-right: 96px; }
+  .pw button { position: absolute; right: 4px; top: 4px; min-height: 48px; min-width: 84px; border: 0; background: transparent; color: var(--link); font-weight: 700; cursor: pointer; }
+
+  /* ---------- 鳥寶清單 ---------- */
+  .list { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+  .card { border: 2px solid var(--line); border-radius: 14px; background: var(--bg); overflow: hidden; }
+  .card.sold .thumb img { filter: grayscale(1); opacity: .55; }
+  .card-main { display: grid; grid-template-columns: 84px 1fr; gap: 14px; padding: 12px 12px 8px; align-items: center; color: inherit; text-decoration: none; min-height: 84px; }
+  .thumb { width: 84px; height: 84px; border-radius: 10px; overflow: hidden; background: var(--tint); display: grid; place-items: center; }
+  .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .thumb svg { width: 46px; height: 46px; color: var(--board); }
+  .card-name { font-size: 20px; font-weight: 700; line-height: 1.3; overflow-wrap: anywhere; }
+  .card-price { color: var(--muted); font-size: 17px; margin-top: 2px; }
+  .card-actions { display: flex; gap: 8px; padding: 0 12px 12px; align-items: stretch; flex-wrap: wrap; }
+  .card-actions .btn { min-height: 48px; padding: 0 14px; font-size: 17px; flex: 1 1 0; min-width: 72px; }
+  .card-actions .tag { flex: 1.6 1 0; }
+
+  /* 狀態腳環：左邊一個環，右邊是文字；顏色與網站徽章一致 */
+  .tag {
+    display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+    min-height: 48px; padding: 0 16px 0 12px; border-radius: 999px; border: 0; cursor: pointer;
+    font-weight: 700; font-size: 18px; white-space: nowrap;
+    background: var(--st-avail-bg); color: var(--st-avail-ink);
+  }
+  .tag::before { content: ""; width: 18px; height: 18px; border-radius: 50%; border: 4px solid currentColor; flex: none; }
+  .tag[data-st="已預訂"] { background: var(--st-reserved-bg); color: var(--st-reserved-ink); }
+  .tag[data-st="已售出"] { background: var(--st-sold-bg); color: var(--st-sold-ink); }
+  .tag:disabled { opacity: .6; cursor: progress; }
+
+  .empty { text-align: center; padding: 40px 12px; color: var(--muted); }
+
+  .bar {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 15;
+    padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+    background: color-mix(in srgb, var(--bg) 94%, transparent); border-top: 1px solid var(--line);
+    backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  }
+  .bar-inner { max-width: 720px; margin: 0 auto; display: flex; gap: 10px; }
+  .bar .btn { flex: 1; min-height: 56px; font-size: 19px; }
+
+  /* ---------- 新增／編輯 ---------- */
+  .back { background: none; border: 0; padding: 0 8px 0 0; min-height: 48px; color: var(--link); font-weight: 700; font-size: 18px; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; }
+  .photo-box { display: grid; grid-template-columns: 132px 1fr; gap: 16px; align-items: center; }
+  .photo-prev { width: 132px; height: 132px; border-radius: 12px; overflow: hidden; background: var(--tint); display: grid; place-items: center; border: 2px solid var(--line); }
+  .photo-prev img { width: 100%; height: 100%; object-fit: cover; }
+  .photo-prev svg { width: 64px; height: 64px; color: var(--board); }
+  .photo-note { margin: 8px 0 0; font-size: 16px; color: var(--muted); }
+  .seg { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .seg button {
+    min-height: 56px; border-radius: 12px; border: 2px solid var(--line); background: var(--bg);
+    font-weight: 700; font-size: 18px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 0 6px;
+  }
+  .seg button::before { content: ""; width: 16px; height: 16px; border-radius: 50%; border: 4px solid currentColor; flex: none; }
+  .seg button[aria-checked="true"][data-st="在店"] { background: var(--st-avail-bg); color: var(--st-avail-ink); border-color: var(--st-avail-bg); }
+  .seg button[aria-checked="true"][data-st="已預訂"] { background: var(--st-reserved-bg); color: var(--st-reserved-ink); border-color: var(--st-reserved-bg); }
+  .seg button[aria-checked="true"][data-st="已售出"] { background: var(--st-sold-bg); color: var(--st-sold-ink); border-color: var(--st-sold-bg); }
+  details.en { border: 2px solid var(--line); border-radius: 12px; margin: 0 0 18px; }
+  details.en summary { min-height: 56px; display: flex; align-items: center; padding: 0 16px; font-weight: 700; cursor: pointer; }
+  details.en[open] summary { border-bottom: 2px solid var(--line); }
+  details.en .in { padding: 16px 16px 0; }
+  .del-zone { margin-top: 36px; padding-top: 22px; border-top: 1px solid var(--line); }
+
+  @media (prefers-reduced-motion: reduce) { .toast { transition: none; } }
+</style>
+</head>
+<body>
+
+<header class="top" id="top" hidden>
+  <div class="brand"><img src="admin-icons/icon-192.png" alt=""><b>禾園鳥坊後台</b></div>
+  <div class="who" id="who"></div>
+  <button class="btn" id="logout" type="button">登出</button>
+</header>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<!-- 載入中 -->
+<main id="v-boot"><p class="empty">載入中…</p></main>
+
+<!-- 登入 -->
+<section class="login" id="v-login" hidden>
+  <img class="login-logo" src="admin-icons/icon-192.png" alt="禾園鳥坊">
+  <h1>禾園鳥坊後台</h1>
+  <p class="sub">請用店裡的帳號登入</p>
+  <form id="loginForm" novalidate>
+    <div class="field">
+      <label for="email">電子郵件</label>
+      <input class="input" id="email" type="email" inputmode="email" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" required>
+    </div>
+    <div class="field">
+      <label for="password">密碼</label>
+      <div class="pw">
+        <input class="input" id="password" type="password" autocomplete="current-password" required>
+        <button type="button" id="pwToggle" aria-controls="password">顯示密碼</button>
+      </div>
+    </div>
+    <div class="msg" id="loginErr" role="alert" hidden></div>
+    <button class="btn btn-primary btn-block" id="loginBtn" type="submit">登入</button>
+  </form>
+</section>
+
+<!-- 鳥寶清單 -->
+<main id="v-list" hidden>
+  <h1>在店鳥寶</h1>
+  <p class="muted" style="margin:-6px 0 14px">點狀態標籤可以切換：在店 → 已預訂 → 已售出，會馬上存檔。</p>
+  <div class="msg" id="listErr" role="alert" hidden></div>
+  <ul class="list" id="list"></ul>
+  <p class="empty" id="listEmpty" hidden>還沒有鳥寶。<br>按下方「新增鳥寶」開始上架。</p>
+  <p class="empty" id="listLoading">載入中…</p>
+  <div class="bar"><div class="bar-inner">
+    <a class="btn btn-primary" href="#/new">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M12 4v16M4 12h16"/></svg>新增鳥寶
+    </a>
+  </div></div>
+</main>
+
+<!-- 新增／編輯 -->
+<main id="v-edit" hidden>
+  <button class="back" id="back" type="button">‹ 返回清單</button>
+  <h1 id="editTitle">新增鳥寶</h1>
+  <form id="form" novalidate>
+    <div class="field">
+      <span class="lab">照片</span>
+      <div class="photo-box">
+        <div class="photo-prev" id="photoPrev"></div>
+        <div>
+          <button class="btn btn-block" id="photoBtn" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>
+            <span id="photoBtnTxt">拍照或選照片</span>
+          </button>
+          <input id="photoInput" type="file" accept="image/*" hidden>
+        </div>
+      </div>
+      <p class="photo-note" id="photoNote" aria-live="polite"></p>
+    </div>
+
+    <div class="field">
+      <label for="f-name">名稱 <span class="hint">（必填）</span></label>
+      <input class="input" id="f-name" maxlength="40" autocomplete="off" required>
+    </div>
+    <div class="field">
+      <label for="f-desc">一句介紹</label>
+      <textarea class="input" id="f-desc" rows="3" maxlength="200" placeholder="例如：8 個月大，個性親人，適合新手"></textarea>
+    </div>
+    <div class="field">
+      <label for="f-price">價格 <span class="hint">（可不填）</span></label>
+      <input class="input" id="f-price" maxlength="40" autocomplete="off" placeholder="例如：NT$1,200">
+    </div>
+    <div class="field">
+      <span class="lab" id="stLab">狀態</span>
+      <div class="seg" id="seg" role="radiogroup" aria-labelledby="stLab">
+        <button type="button" role="radio" data-st="在店">在店</button>
+        <button type="button" role="radio" data-st="已預訂">已預訂</button>
+        <button type="button" role="radio" data-st="已售出">已售出</button>
+      </div>
+    </div>
+
+    <details class="en" id="en">
+      <summary>英文（選填）</summary>
+      <div class="in">
+        <div class="field">
+          <label for="f-name-en">英文名稱</label>
+          <input class="input" id="f-name-en" maxlength="80" autocomplete="off" autocapitalize="words">
+        </div>
+        <div class="field">
+          <label for="f-desc-en">英文介紹</label>
+          <textarea class="input" id="f-desc-en" rows="3" maxlength="300"></textarea>
+        </div>
+      </div>
+    </details>
+
+    <div class="msg" id="formErr" role="alert" hidden></div>
+
+    <div class="del-zone" id="delZone" hidden>
+      <button class="btn btn-danger btn-block" id="delBtn" type="button">刪除這隻鳥寶</button>
+    </div>
+  </form>
+  <div class="bar"><div class="bar-inner">
+    <button class="btn btn-primary" id="saveBtn" type="button">儲存</button>
+  </div></div>
+</main>
+
+<script src="supabase-config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js" integrity="sha384-TcHRA3zBbn+Lexh5n+Oil4guNPOS3rjNDpGRAN46u/s/mB2IZ50ceC6TYDU2yvgK" crossorigin="anonymous"></script>
+<script>
+(function () {
+  'use strict';
+
+  var CFG = window.SUPABASE_CONFIG;
+  var TABLE = CFG && CFG.birdsTable, BUCKET = CFG && CFG.photoBucket;
+  var STATUSES = ['在店', '已預訂', '已售出'];
+  var LEAVE_MSG = '還沒儲存，確定要離開嗎？';
+  var MAX_SIDE = 1600, MAX_BYTES = 500 * 1024;
+  var HEIC_SRC = 'https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js';
+  var HEIC_SRI = 'sha384-OTofQ0MEeiSgh62havBcemCIK0gqj809wX6UA0uPISNMRnR6NZyCdGzX3SbLrgwL';
+  var BIRD_SVG = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><ellipse cx="11" cy="14" rx="6" ry="5"/><circle cx="15" cy="8" r="3.5"/><path d="M18 7.500 23 9.200 18 10.500z"/><path d="M4 11 1 17l5-2z"/></svg>';
+
+  function $(id) { return document.getElementById(id); }
+  function show(id, on) { $(id).hidden = !on; }
+
+  var sb = null;
+  var S = {
+    user: null,
+    birds: [], loaded: false,
+    chain: Promise.resolve(),          // 排序存檔排隊，避免連點時互相覆蓋
+    edit: null                          // 目前編輯中的狀態
+  };
+
+  /* ---------------- 小工具 ---------------- */
+  var toastTimer;
+  function toast(text, isError) {
+    var t = $('toast');
+    t.textContent = text; t.className = 'toast show' + (isError ? ' error' : '');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { t.className = 'toast' + (isError ? ' error' : ''); }, isError ? 4500 : 2500);
+  }
+
+  // 把 Supabase 的英文錯誤換成中文
+  function zhError(err) {
+    var m = String((err && err.message) || err || ''), c = (err && (err.code || err.error_code)) || '', st = err && err.status;
+    if (/invalid login credentials/i.test(m) || c === 'invalid_credentials') return '帳號或密碼錯誤';
+    if (/email not confirmed/i.test(m)) return '這個帳號還沒驗證信箱，請聯絡管理員';
+    if (st === 429 || /rate limit|too many/i.test(m) || /rate_limit/.test(c)) return '嘗試太多次了，請等幾分鐘再試';
+    if (/failed to fetch|networkerror|network request failed|load failed|retryable/i.test(m) || (err && err.name === 'AuthRetryableFetchError')) return '連不上網路，請檢查網路後再試';
+    if (/jwt|token.*expired|not authenticated|refresh_token|session/i.test(m) || st === 401) return '登入已過期，請重新登入';
+    if (/exceeded the maximum allowed size|payload too large|too large/i.test(m) || st === 413) return '照片太大，請換一張小一點的';
+    if (/mime type|not supported/i.test(m)) return '這種照片格式不能上傳';
+    if (/row-level security|permission denied|violates row/i.test(m) || c === '42501') return '沒有權限，請重新登入';
+    if (m === 'NOROWS') return '沒有存到，可能登入已過期，請重新登入後再試';
+    return '發生錯誤，請稍後再試' + (c ? '（' + c + '）' : '');
+  }
+
+  function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+
+  /* ---------------- 畫面切換與路由 ---------------- */
+  var route = 'boot', lastHash = '', ignoreHash = false;
+
+  function showOnly(name) {
+    ['boot', 'login', 'list', 'edit'].forEach(function (n) { show('v-' + n, n === name); });
+    show('top', name === 'list' || name === 'edit');
+    window.scrollTo(0, 0);
+  }
+
+  function isDirty() {
+    var e = S.edit;
+    return !!(e && !e.saving && (e.photoBlob || snapshot() !== e.snap));
+  }
+
+  function parseHash() {
+    var h = location.hash;
+    if (h === '#/new') return { r: 'edit', id: null };
+    var m = /^#\/edit\/([0-9a-f-]{36})$/i.exec(h);
+    if (m) return { r: 'edit', id: m[1] };
+    return { r: 'list' };
+  }
+
+  function goList() { location.replace('#/'); }
+
+  function render() {
+    lastHash = location.hash;
+    if (!S.user) { return; }
+    var p = parseHash();
+    if (p.r === 'edit') openEdit(p.id); else openList();
+  }
+
+  window.addEventListener('hashchange', function () {
+    if (ignoreHash) { ignoreHash = false; return; }
+    if (route === 'edit' && S.edit && S.edit.saving) {            // 儲存中不能離開
+      ignoreHash = true; location.hash = lastHash; return;
+    }
+    if (route === 'edit' && isDirty() && !confirm(LEAVE_MSG)) {
+      ignoreHash = true; location.hash = lastHash; return;         // 留在原頁
+    }
+    render();
+  });
+
+  window.addEventListener('beforeunload', function (ev) {
+    if (route === 'edit' && S.edit && (S.edit.saving || isDirty())) { ev.preventDefault(); ev.returnValue = ''; }
+  });
+
+  /* ---------------- 登入 ---------------- */
+  function showLogin() {
+    route = 'login'; S.user = null; S.birds = []; S.loaded = false; S.edit = null;
+    showOnly('login');
+    $('password').value = '';
+    show('loginErr', false);
+  }
+
+  function setUser(user) {
+    var first = !S.user;
+    S.user = user;
+    $('who').textContent = user.email || '';
+    $('who').title = user.email || '';
+    if (first) render();
+  }
+
+  $('pwToggle').addEventListener('click', function () {
+    var p = $('password'), on = p.type === 'password';
+    p.type = on ? 'text' : 'password';
+    this.textContent = on ? '隱藏密碼' : '顯示密碼';
+  });
+
+  $('loginForm').addEventListener('submit', async function (ev) {
+    ev.preventDefault();
+    var email = $('email').value.trim(), pw = $('password').value, btn = $('loginBtn'), err = $('loginErr');
+    err.hidden = true;
+    if (!email || !pw) { err.textContent = '請輸入電子郵件和密碼'; err.hidden = false; return; }
+    btn.disabled = true; btn.textContent = '登入中…';
+    try {
+      var r = await sb.auth.signInWithPassword({ email: email, password: pw });
+      if (r.error) throw r.error;
+      // 成功後由 onAuthStateChange 切換畫面
+    } catch (e) {
+      err.textContent = zhError(e); err.hidden = false;
+    } finally {
+      btn.disabled = false; btn.textContent = '登入';
+    }
+  });
+
+  $('logout').addEventListener('click', async function () {
+    if (S.edit && S.edit.saving) return;
+    if (route === 'edit' && isDirty() && !confirm(LEAVE_MSG)) return;
+    S.edit = null;
+    this.disabled = true;
+    try { await sb.auth.signOut(); } catch (e) { toast(zhError(e), true); }
+    this.disabled = false;
+  });
+
+  /* ---------------- 鳥寶清單 ---------------- */
+  function openList() {
+    route = 'list'; S.edit = null; showOnly('list');
+    $('logout').disabled = false;       // 儲存／刪除期間會鎖住登出，回到清單要解鎖
+    renderList();
+    loadBirds();
+  }
+
+  async function loadBirds() {
+    show('listErr', false);
+    $('listLoading').hidden = S.loaded || S.birds.length > 0;
+    var seq = S.loadSeq = (S.loadSeq || 0) + 1;      // 只採用最後一次請求的結果，慢回來的舊資料直接丟掉
+    try {
+      var r = await sb.from(TABLE).select('*')
+        .order('sort_order', { ascending: true })
+        .order('created_at', { ascending: false });
+      if (seq !== S.loadSeq) return;
+      if (r.error) throw r.error;
+      S.birds = r.data || []; S.loaded = true;
+    } catch (e) {
+      if (seq !== S.loadSeq) return;
+      var box = $('listErr');
+      box.textContent = '讀不到鳥寶清單：' + zhError(e);
+      box.hidden = false;
+    }
+    $('listLoading').hidden = true;
+    if (route === 'list') renderList();
+  }
+
+  function statusNext(s) { return STATUSES[(STATUSES.indexOf(s) + 1) % STATUSES.length]; }
+
+  function renderList(focusSel) {
+    var ul = $('list'); ul.textContent = '';
+    $('listEmpty').hidden = !(S.loaded && S.birds.length === 0);
+    S.birds.forEach(function (b, i) {
+      var li = el('li', 'card' + (b.status === '已售出' ? ' sold' : ''));
+      li.dataset.id = b.id;
+
+      var main = el('a', 'card-main'); main.href = '#/edit/' + b.id;
+      main.setAttribute('aria-label', '編輯 ' + b.name);
+      var th = el('div', 'thumb');
+      if (b.photo_url) {
+        var img = el('img'); img.alt = ''; img.loading = 'lazy'; img.src = b.photo_url;
+        img.onerror = function () { th.textContent = ''; th.innerHTML = BIRD_SVG; };
+        th.appendChild(img);
+      } else th.innerHTML = BIRD_SVG;
+      var tx = el('div');
+      tx.appendChild(el('div', 'card-name', b.name));
+      tx.appendChild(el('div', 'card-price', b.price ? b.price : '（未填價格）'));
+      main.appendChild(th); main.appendChild(tx);
+      li.appendChild(main);
+
+      var act = el('div', 'card-actions');
+      var tag = el('button', 'tag'); tag.type = 'button'; tag.dataset.st = b.status; tag.dataset.act = 'status';
+      tag.setAttribute('aria-label', '狀態：' + b.status + '，點一下改成' + statusNext(b.status));
+      tag.appendChild(el('span', null, b.status));
+      tag.disabled = !!b.busy;
+      act.appendChild(tag);
+
+      var up = el('button', 'btn', '上移'); up.type = 'button'; up.dataset.act = 'up'; up.disabled = i === 0;
+      up.setAttribute('aria-label', '把 ' + b.name + ' 往上移');
+      var dn = el('button', 'btn', '下移'); dn.type = 'button'; dn.dataset.act = 'down'; dn.disabled = i === S.birds.length - 1;
+      dn.setAttribute('aria-label', '把 ' + b.name + ' 往下移');
+      act.appendChild(up); act.appendChild(dn);
+      li.appendChild(act);
+      ul.appendChild(li);
+    });
+    if (focusSel) { var f = ul.querySelector(focusSel); if (f && !f.disabled) f.focus(); }
+  }
+
+  $('list').addEventListener('click', function (ev) {
+    var btn = ev.target.closest('button[data-act]'); if (!btn) return;
+    var li = btn.closest('li'), id = li.dataset.id, act = btn.dataset.act;
+    if (act === 'status') changeStatus(id);
+    else moveBird(id, act === 'up' ? -1 : 1);
+  });
+
+  async function changeStatus(id) {
+    var b = S.birds.find(function (x) { return x.id === id; });
+    if (!b || b.busy) return;
+    var old = b.status, next = statusNext(old);
+    b.status = next; b.busy = true; renderList('li[data-id="' + id + '"] [data-act="status"]');
+    try {
+      var r = await sb.from(TABLE).update({ status: next }).eq('id', id).select('id');
+      if (r.error) throw r.error;
+      if (!r.data || !r.data.length) throw new Error('NOROWS');
+    } catch (e) {
+      b.status = old; toast(zhError(e), true);
+    }
+    b.busy = false;
+    if (route === 'list') renderList('li[data-id="' + id + '"] [data-act="status"]');
+  }
+
+  function moveBird(id, dir) {
+    var i = S.birds.findIndex(function (x) { return x.id === id; }), j = i + dir;
+    if (i < 0 || j < 0 || j >= S.birds.length) return;
+    var t = S.birds[i]; S.birds[i] = S.birds[j]; S.birds[j] = t;
+    // 全部重新編號成 0,1,2…（舊資料可能都是 0，直接交換不會有效果）
+    var changes = [];
+    S.birds.forEach(function (b, k) { if (b.sort_order !== k) { b.sort_order = k; changes.push({ id: b.id, sort_order: k }); } });
+    renderList('li[data-id="' + id + '"] [data-act="' + (dir < 0 ? 'up' : 'down') + '"]');
+    S.chain = S.chain.then(async function () {
+      try {
+        var rs = await Promise.all(changes.map(function (c) {
+          return sb.from(TABLE).update({ sort_order: c.sort_order }).eq('id', c.id).select('id');
+        }));
+        rs.forEach(function (r) { if (r.error) throw r.error; if (!r.data || !r.data.length) throw new Error('NOROWS'); });
+      } catch (e) {
+        toast('順序沒有存到：' + zhError(e), true);
+        if (route === 'list') loadBirds();
+      }
+    });
+  }
+
+  /* ---------------- 新增／編輯 ---------------- */
+  function formData() {
+    return {
+      name: $('f-name').value.trim(),
+      description: $('f-desc').value.trim(),
+      price: $('f-price').value.trim(),
+      status: S.edit ? S.edit.status : '在店',
+      name_en: $('f-name-en').value.trim(),
+      description_en: $('f-desc-en').value.trim()
+    };
+  }
+  function snapshot() { return JSON.stringify(formData()); }
+
+  function setStatusUI(st) {
+    S.edit.status = st;
+    Array.prototype.forEach.call($('seg').children, function (b) { b.setAttribute('aria-checked', String(b.dataset.st === st)); });
+  }
+  $('seg').addEventListener('click', function (ev) {
+    var b = ev.target.closest('button[data-st]');
+    if (b && S.edit && !S.edit.saving) setStatusUI(b.dataset.st);
+  });
+
+  function setPreview(url) {
+    var box = $('photoPrev'); box.textContent = '';
+    if (url) { var i = el('img'); i.alt = '目前的照片'; i.src = url; i.onerror = function () { box.innerHTML = BIRD_SVG; }; box.appendChild(i); }
+    else box.innerHTML = BIRD_SVG;
+    $('photoBtnTxt').textContent = url ? '更換照片' : '拍照或選照片';
+  }
+
+  async function openEdit(id) {
+    var bird = null;
+    if (id) {
+      bird = S.birds.find(function (x) { return x.id === id; }) || null;
+      if (!bird) {
+        route = 'boot'; showOnly('boot');
+        try {
+          var r = await sb.from(TABLE).select('*').eq('id', id).maybeSingle();
+          if (r.error) throw r.error;
+          bird = r.data;
+        } catch (e) { toast(zhError(e), true); goList(); return; }
+        if (!bird) { toast('找不到這隻鳥寶，可能已被刪除', true); goList(); return; }
+      }
+    }
+    route = 'edit';
+    S.edit = { id: id, bird: bird, status: bird ? bird.status : '在店', photoBlob: null, previewUrl: null, processing: false, saving: false, snap: '' };
+    $('editTitle').textContent = id ? '編輯鳥寶' : '新增鳥寶';
+    $('f-name').value = bird ? bird.name : '';
+    $('f-desc').value = (bird && bird.description) || '';
+    $('f-price').value = (bird && bird.price) || '';
+    $('f-name-en').value = (bird && bird.name_en) || '';
+    $('f-desc-en').value = (bird && bird.description_en) || '';
+    $('en').open = !!(bird && (bird.name_en || bird.description_en));
+    $('photoInput').value = '';
+    $('photoNote').textContent = '';
+    show('formErr', false);
+    $('delZone').hidden = !id;
+    setPreview(bird && bird.photo_url);
+    setStatusUI(S.edit.status);
+    S.edit.snap = snapshot();
+    setBusy(false);
+    showOnly('edit');
+  }
+
+  // 儲存／處理照片期間：鎖住按鈕與欄位，避免重複送出
+  function setBusy(saving) {
+    var e = S.edit; if (!e) return;
+    e.saving = saving;
+    var btn = $('saveBtn');
+    btn.disabled = saving || e.processing;
+    btn.textContent = saving ? '上傳中…' : (e.processing ? '處理照片中…' : '儲存');
+    ['photoBtn', 'delBtn', 'back', 'logout'].forEach(function (id) { $(id).disabled = saving; });
+    Array.prototype.forEach.call($('form').querySelectorAll('input,textarea'), function (x) { x.disabled = saving; });
+    Array.prototype.forEach.call($('seg').children, function (b) { b.disabled = saving; });
+  }
+
+  $('back').addEventListener('click', function () { location.hash = '#/'; });   // 由 hashchange 負責「未儲存」確認
+
+  $('photoBtn').addEventListener('click', function () { $('photoInput').click(); });
+
+  $('photoInput').addEventListener('change', async function () {
+    var f = this.files && this.files[0]; if (!f || !S.edit) return;
+    var e = S.edit, note = $('photoNote');
+    e.processing = true; setBusy(false);
+    note.textContent = '處理照片中…';
+    try {
+      var blob = await toJpeg(f);
+      if (S.edit !== e) return;
+      if (e.previewUrl) URL.revokeObjectURL(e.previewUrl);
+      e.photoBlob = blob; e.previewUrl = URL.createObjectURL(blob);
+      setPreview(e.previewUrl);
+      note.textContent = '照片已準備好（' + Math.round(blob.size / 1024) + ' KB），按「儲存」才會上傳';
+    } catch (err) {
+      note.textContent = '這張照片無法處理，請換一張或重新拍照';
+    } finally {
+      e.processing = false; if (S.edit === e) setBusy(false);
+      this.value = '';
+    }
+  });
+
+  function loadScript(src, sri) {
+    return new Promise(function (res, rej) {
+      var s = document.createElement('script'); s.src = src; s.integrity = sri; s.crossOrigin = 'anonymous';
+      s.onload = res; s.onerror = function () { rej(new Error('load heic2any')); };
+      document.head.appendChild(s);
+    });
+  }
+
+  async function toJpeg(file) {
+    var src = file;
+    if (/image\/hei[cf]/i.test(file.type) || /\.hei[cf]$/i.test(file.name)) {
+      if (!window.heic2any) await loadScript(HEIC_SRC, HEIC_SRI);
+      var out = await window.heic2any({ blob: file, toType: 'image/jpeg', quality: 0.9 });
+      src = Array.isArray(out) ? out[0] : out;
+    }
+    var bmp;
+    try { bmp = await createImageBitmap(src, { imageOrientation: 'from-image' }); }
+    catch (e) { bmp = await imgFallback(src); }
+    var w = bmp.width, h = bmp.height, k = Math.min(1, MAX_SIDE / Math.max(w, h));
+    var scale = k, best = null;
+    for (var round = 0; round < 6; round++) {
+      var cw = Math.max(1, Math.round(w * scale)), ch = Math.max(1, Math.round(h * scale));
+      var c = document.createElement('canvas'); c.width = cw; c.height = ch;
+      var x = c.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0, 0, cw, ch);
+      x.imageSmoothingQuality = 'high'; x.drawImage(bmp, 0, 0, cw, ch);
+      for (var q = 0.85; q >= 0.5; q -= 0.07) {
+        best = await new Promise(function (r) { c.toBlob(r, 'image/jpeg', q); });
+        if (!best) throw new Error('toBlob');
+        if (best.size <= MAX_BYTES) { if (bmp.close) bmp.close(); return best; }
+      }
+      scale *= 0.85;                                   // 還是太大就再縮小尺寸
+    }
+    if (bmp.close) bmp.close();
+    return best;                                       // 盡量小；上限由 Storage 的 5MB 把關
+  }
+  function imgFallback(blob) {
+    return new Promise(function (res, rej) {
+      var u = URL.createObjectURL(blob), i = new Image();
+      i.onload = function () { URL.revokeObjectURL(u); res(i); };
+      i.onerror = function () { URL.revokeObjectURL(u); rej(new Error('img')); };
+      i.src = u;
+    });
+  }
+
+  // 從公開網址取回 bucket 內的檔名，才能刪除
+  function pathFromUrl(url) {
+    if (!url) return null;
+    var mark = '/object/public/' + BUCKET + '/', i = url.indexOf(mark);
+    if (i < 0) return null;
+    return decodeURIComponent(url.slice(i + mark.length).split('?')[0]);
+  }
+  async function removePhoto(url) {
+    var p = pathFromUrl(url); if (!p) return true;
+    var r = await sb.storage.from(BUCKET).remove([p]);
+    // remove() 沒刪到東西也不會報錯，所以要檢查回傳
+    return !r.error && r.data && r.data.length > 0;
+  }
+
+  $('saveBtn').addEventListener('click', async function () {
+    var e = S.edit; if (!e || e.saving || e.processing) return;
+    var d = formData(), err = $('formErr');
+    err.hidden = true;
+    if (!d.name) { err.textContent = '請填寫名稱'; err.hidden = false; $('f-name').focus(); return; }
+    setBusy(true);
+    var newPath = null;
+    try {
+      var photoUrl = e.bird ? e.bird.photo_url : null, oldUrl = photoUrl;
+      if (e.photoBlob) {
+        newPath = 'bird-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8) + '.jpg';
+        var up = await sb.storage.from(BUCKET).upload(newPath, e.photoBlob, { contentType: 'image/jpeg', cacheControl: '31536000' });
+        if (up.error) { newPath = null; throw up.error; }
+        photoUrl = sb.storage.from(BUCKET).getPublicUrl(newPath).data.publicUrl;
+      }
+      var payload = {
+        name: d.name, description: d.description || null, price: d.price || null, status: d.status,
+        name_en: d.name_en || null, description_en: d.description_en || null, photo_url: photoUrl || null
+      };
+      var r;
+      if (e.id) {
+        r = await sb.from(TABLE).update(payload).eq('id', e.id).select('id');
+      } else {
+        var m = await sb.from(TABLE).select('sort_order').order('sort_order', { ascending: true }).limit(1);
+        if (m.error) throw m.error;
+        payload.sort_order = (m.data && m.data.length ? m.data[0].sort_order : 0) - 1;   // 新的放最上面
+        r = await sb.from(TABLE).insert(payload).select('id');
+      }
+      if (r.error) throw r.error;
+      if (!r.data || !r.data.length) throw new Error('NOROWS');
+      newPath = null;                                   // 已寫入資料庫，不能再當殘檔刪掉
+
+      var warn = false;
+      if (e.photoBlob && oldUrl && oldUrl !== photoUrl) { try { warn = !(await removePhoto(oldUrl)); } catch (x) { warn = true; } }
+
+      e.saving = false; e.photoBlob = null; e.snap = snapshot();   // 已存檔，離開時不再詢問
+      S.loaded = false;
+      goList();
+      toast(warn ? '已儲存（舊照片沒刪掉，不影響使用）' : '已儲存');
+    } catch (ex) {
+      if (newPath) { try { await sb.storage.from(BUCKET).remove([newPath]); } catch (x) {} }   // 清掉剛傳的殘檔
+      err.textContent = '沒有儲存成功：' + zhError(ex); err.hidden = false;
+      setBusy(false);
+      err.scrollIntoView({ block: 'center' });
+    }
+  });
+
+  $('delBtn').addEventListener('click', async function () {
+    var e = S.edit; if (!e || !e.id || e.saving) return;
+    if (!confirm('確定要刪除「' + e.bird.name + '」嗎？\n照片也會一起刪掉，無法復原。')) return;
+    var err = $('formErr'); err.hidden = true;
+    setBusy(true);
+    $('saveBtn').textContent = '刪除中…';
+    try {
+      var r = await sb.from(TABLE).delete().eq('id', e.id).select('id');
+      if (r.error) throw r.error;
+      if (!r.data || !r.data.length) throw new Error('NOROWS');
+      var warn = false;
+      try { warn = !(await removePhoto(e.bird.photo_url)); } catch (x) { warn = true; }
+      S.birds = S.birds.filter(function (b) { return b.id !== e.id; });
+      e.saving = false; e.photoBlob = null; e.snap = snapshot();
+      goList();
+      toast(warn ? '已刪除（照片檔沒刪掉，請告訴管理員）' : '已刪除');
+    } catch (ex) {
+      err.textContent = '沒有刪除成功：' + zhError(ex); err.hidden = false;
+      setBusy(false);
+    }
+  });
+
+  /* ---------------- 啟動 ---------------- */
+  function boot() {
+    if (!CFG || !window.supabase || !window.supabase.createClient) {
+      $('v-boot').innerHTML = '<p class="msg">無法載入連線元件，請檢查網路後重新整理頁面。</p>';
+      return;
+    }
+    sb = window.supabase.createClient(CFG.url, CFG.publishableKey, {
+      auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: false }
+    });
+    // 注意：callback 裡不要直接 await Supabase 的呼叫，所以用 setTimeout 錯開
+    sb.auth.onAuthStateChange(function (event, session) {
+      setTimeout(function () {
+        if (session && session.user) setUser(session.user);
+        else if (event === 'SIGNED_OUT' || event === 'INITIAL_SESSION') showLogin();
+      }, 0);
+    });
+  }
+  boot();
+})();
+</script>
+</body>
+</html>
