@@ -133,6 +133,10 @@
   .plain .circle .stroke { stroke: var(--link); }
   .plain .item h3 { margin-top: 12px; }
   .tinted .plain .item + .item { border-left-color: #D3DDDF; }
+  /* 養鳥知識：五個圖示。電腦版一排五個；手機上面三個、下面兩個置中 */
+  .icons.five { grid-template-columns: repeat(5, 1fr); gap: 40px 12px; }
+  .icons.five .circle { width: 120px; height: 120px; }
+  .icons.five .label { padding: 10px 14px; font-size: 18px; text-wrap: balance; }
   .ask { margin: 44px auto 0; color: var(--muted); font-size: 19px; }
   .ask a { font-weight: 700; display: inline-block; padding: 6px 2px; margin: -6px 0; }
 
@@ -248,6 +252,10 @@
   @media (max-width: 760px) {
     .about, .visit { grid-template-columns: 1fr; }
     .icons.four { grid-template-columns: repeat(2, 1fr); }
+    .icons.five { display: flex; flex-wrap: wrap; justify-content: center; gap: 28px 4px; }
+    .icons.five .item { width: calc((100% - 8px) / 3); }
+    .icons.five .circle { width: min(108px, 24vw); height: min(108px, 24vw); }
+    .icons.five .label { padding: 9px 2px; font-size: 16px; letter-spacing: 0; max-width: 100%; }
     .plain { row-gap: 28px; }
     .plain .item + .item { border-left: none; }
     .plain .item:nth-child(even) { border-left: 1px solid var(--line); }
@@ -335,7 +343,7 @@
 
   <section id="knowledge">
     <h2 class="center" data-i18n="care_title">養鳥知識</h2>
-    <div class="icons four">
+    <div class="icons five">
       <a class="item" href="care.html#beginner">
         <span class="circle"><svg viewBox="0 0 64 64" aria-hidden="true"><ellipse cx="29" cy="37" rx="16" ry="12"/><circle cx="43" cy="25" r="9"/><polygon points="51,22 59,25.5 51,29"/><polygon points="15,38 3,47 18,45"/><circle class="cut" cx="45.5" cy="23" r="1.8"/><path class="cut-line" d="M20 36 q8 7 18 1"/></svg></span>
         <span class="label" data-i18n="care1">新手入門</span>
@@ -351,6 +359,10 @@
       <a class="item" href="care.html#health">
         <span class="circle"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M32 54 L12 34 a11 11 0 0 1 20 -15 a11 11 0 0 1 20 15z"/><rect class="cut" x="29" y="24" width="6" height="18"/><rect class="cut" x="23" y="30" width="18" height="6"/></svg></span>
         <span class="label" data-i18n="care4">健康警訊</span>
+      </a>
+      <a class="item" href="care.html#faq">
+        <span class="circle"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="25"/><path class="cut-line thick" d="M24.5 26.5 a7.5 7.5 0 1 1 10.5 6.9 c-2 1-3 2.3-3 4.6"/><circle class="cut" cx="32" cy="46" r="3.2"/></svg></span>
+        <span class="label" data-i18n="care5">新手問答</span>
       </a>
     </div>
     <p class="center" style="margin-top:36px"><a class="btn btn-main" href="care.html#species" data-i18n="care_species">依鳥種查詢</a></p>
@@ -509,7 +521,7 @@ var EN = {
   sup4: "Accessories", sup4_t: "Bird stands, bowls, cleaning supplies and more",
   care_title: "Bird Care",
   care_species: "Search by Species",
-  care1: "Beginner's Guide", care2: "Choosing Feed", care3: "Daily Care", care4: "Warning Signs",
+  care1: "Beginner's Guide", care2: "Choosing Feed", care3: "Daily Care", care4: "Warning Signs", care5: "FAQ",
   care_ask: 'Can\u2019t find an answer? <a href="#" data-line>Ask our helper</a>',
   about_title: "About Us",
   about_p1: 'Hoyuan Birds is a traditional bird shop in Taichung, open since <span class="fill">[Year opened]</span>. <span class="fill">[A line about the owner and the shop]</span>',
