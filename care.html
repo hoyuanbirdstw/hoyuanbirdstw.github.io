@@ -347,6 +347,11 @@
   .c-card:hover { border-color: var(--link); }
   .c-ico { flex: none; width: 52px; height: 52px; border-radius: 50%; background: var(--board); display: grid; place-items: center; }
   .c-ico svg { width: 28px; height: 28px; fill: var(--icon-ink); }
+  .c-ico.c-photo { width: 64px; height: 64px; background: var(--tint); overflow: hidden; }
+  .c-ico.c-photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .c-fig { margin: 0 0 16px; max-width: 600px; }
+  .c-fig img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 10px; background: var(--tint); }
+  .c-fig figcaption { margin-top: 6px; font-size: 16px; line-height: 1.6; color: var(--muted); overflow-wrap: anywhere; }
   .c-card-t { min-width: 0; flex: 1; }
   .c-name { display: block; font-size: 19px; font-weight: 700; line-height: 1.35; }
   .c-mem { display: block; margin-top: 2px; font-size: 16px; color: var(--muted); line-height: 1.5; }
@@ -588,11 +593,26 @@ var T = {
 
   function citesCls(c) { return c.level === 'I' ? 'c-pill i' : 'c-pill'; }
 
+  var PHOTOS = window.CARE_PHOTOS || {};
+  function iconHTML(s) {
+    var p = PHOTOS[s.id];
+    if (!p) return '<span class="c-ico">' + BIRD_ICON + '</span>';
+    return '<span class="c-ico c-photo"><img src="photos/species/' + p.file + '" alt="' + esc(pick(p.alt)) + '" width="64" height="64" loading="lazy" decoding="async" style="object-position:' + p.pos + '"></span>';
+  }
+  function figHTML(s) {
+    var p = PHOTOS[s.id]; if (!p) return '';
+    var lic = '<a href="' + esc(p.licenseUrl) + '" target="_blank" rel="noopener">' + esc(p.license) + '</a>';
+    var src = '<a href="' + esc(p.page) + '" target="_blank" rel="noopener">Wikimedia Commons</a>';
+    var cap = lang === 'en' ? 'Photo: ' + esc(p.author) + ', ' + lic + '. Source: ' + src
+                            : '照片：' + esc(p.author) + '，' + lic + '，來源：' + src;
+    return '<figure class="c-fig"><img src="photos/species/' + p.file + '" alt="' + esc(pick(p.alt)) + '" width="' + p.w + '" height="' + p.h + '" loading="lazy" decoding="async" style="object-position:' + p.pos + '"><figcaption>' + cap + '</figcaption></figure>';
+  }
+
   function renderList() {
     $('sp-list').hidden = false; $('sp-detail').hidden = true;
     $('sp-grid').innerHTML = species.map(function (s) {
       return '<button type="button" class="c-card" data-id="' + s.id + '">' +
-        '<span class="c-ico">' + BIRD_ICON + '</span>' +
+        iconHTML(s) +
         '<span class="c-card-t"><span class="c-name">' + pick(s.name) + '</span><span class="c-mem">' + pick(s.members) + '</span>' +
         (s.cites.level === 'I' ? '<span class="c-pill i">' + pick(T.citesTag) + pick(s.cites.badge) + '</span>' : '') +
         '</span></button>';
@@ -626,6 +646,7 @@ var T = {
       '<button type="button" class="c-back" data-back>' + pick(T.back) + '</button>' +
       '<h2 class="c-dname" id="dname" tabindex="-1">' + pick(s.name) + '</h2>' +
       (c.level === 'I' ? '<p style="margin:0 0 8px"><span class="c-pill i">' + pick(T.citesTag) + pick(c.badge) + '</span></p>' : '') +
+      figHTML(s) +
       '<p class="c-names">' + pick(T.names) + pick(s.names) + '</p>' +
       '<p class="c-sold"><span class="c-tag">' + pick(T.sold) + '</span><span>' + pick(T.soldNote) + '</span></p>' +
       '<h3>' + pick(T.basic) + '</h3><div class="c-tablewrap"><table class="c-table"><tbody>' + rowsHTML(s.profile) + citesRow + '</tbody></table></div>' +

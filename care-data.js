@@ -379,3 +379,19 @@
     }
   ];
 })();
+
+/* 鳥種照片（Wikimedia Commons）：檔案放在 photos/species/，作者與授權也列在 photos/species/CREDITS.md
+   pos = 圖片裁切時對齊的位置（直式照片用 center 25%，露出頭部） */
+window.CARE_PHOTOS = {
+  macaw: { file: 'macaw.jpg', pos: 'center', w: 600, h: 400, alt: ["琉璃金剛特寫", "Close-up of a Blue-and-gold Macaw"], author: "H. Zell", license: 'CC BY-SA 3.0', licenseUrl: 'https://creativecommons.org/licenses/by-sa/3.0', page: 'https://commons.wikimedia.org/wiki/File:Ara_ararauna_01.jpg' },
+  conure: { file: 'conure.jpg', pos: 'center', w: 600, h: 450, alt: ["站在橫桿上的金太陽錐尾鸚鵡", "A Sun Conure perched on a bar"], author: "Sarah G from Tulsa, USA", license: 'CC BY-SA 2.0', licenseUrl: 'https://creativecommons.org/licenses/by-sa/2.0', page: 'https://commons.wikimedia.org/wiki/File:Aratinga_solstitialis_on_perch.jpg' },
+  cockatoo: { file: 'cockatoo.jpg', pos: 'center', w: 600, h: 450, alt: ["豎起冠羽的傘巴", "An Umbrella Cockatoo with its crest raised"], author: "www.viajar24h.com", license: 'CC BY 2.0', licenseUrl: 'https://creativecommons.org/licenses/by/2.0', page: 'https://commons.wikimedia.org/wiki/File:Cacatua_alba_-Bali_Bird_Park_-crest-8.jpg' },
+  grey: { file: 'grey.jpg', pos: 'center', w: 600, h: 450, alt: ["灰鸚鵡半身照", "Upper body of an African Grey Parrot"], author: "L.Miguel Bugallo Sánchez", license: 'CC BY-SA 3.0', licenseUrl: 'https://creativecommons.org/licenses/by-sa/3.0/', page: 'https://commons.wikimedia.org/wiki/File:Psittacus_erithacus_-upper_body-8c.jpg' },
+  amazon: { file: 'amazon.jpg', pos: 'center 25%', w: 600, h: 912, alt: ["小黃帽（黃頂亞馬遜鸚鵡）", "A Yellow-crowned Amazon parrot"], author: "Noop1958 at German Wikipedia", license: 'CC BY-SA 3.0', licenseUrl: 'https://creativecommons.org/licenses/by-sa/3.0', page: 'https://commons.wikimedia.org/wiki/File:Gelbscheitelamazone.jpg' },
+  eclectus: { file: 'eclectus.jpg', pos: 'center', w: 600, h: 444, alt: ["母折衷鸚鵡紅色的頭部", "The red head of a female Eclectus Parrot"], author: "H. Zell", license: 'CC BY-SA 3.0', licenseUrl: 'https://creativecommons.org/licenses/by-sa/3.0', page: 'https://commons.wikimedia.org/wiki/File:Eclectus_roratus_-_Maroparque_03.jpg' },
+  lory: { file: 'lory.jpg', pos: 'center 25%', w: 600, h: 900, alt: ["紅色吸蜜鸚鵡", "A Red Lory"], author: "Zhao !", license: 'CC BY 2.0', licenseUrl: 'https://creativecommons.org/licenses/by/2.0', page: 'https://commons.wikimedia.org/wiki/File:Eos_bornea_-captive-8a.jpg' },
+  caique: { file: 'caique.jpg', pos: 'center', w: 600, h: 450, alt: ["兩隻金凱（白腹凱克）", "Two White-bellied Caiques"], author: "TJ Lin", license: 'CC BY-SA 2.0', licenseUrl: 'https://creativecommons.org/licenses/by-sa/2.0', page: 'https://commons.wikimedia.org/wiki/File:Pionites_leucogaster_-two_perching-8a.jpg' },
+  african: { file: 'african.jpg', pos: 'center', w: 600, h: 548, alt: ["塞內加爾鸚鵡", "A Senegal Parrot"], author: "Arne Müseler", license: 'CC BY-SA 3.0 DE', licenseUrl: 'https://creativecommons.org/licenses/by-sa/3.0/de/deed.en', page: 'https://commons.wikimedia.org/wiki/File:Mohrenkopfpapagei1.jpg' },
+  monk: { file: 'monk.jpg', pos: 'center', w: 600, h: 600, alt: ["站在枝頭的和尚鸚鵡", "A Monk Parakeet perched on a branch"], author: "Charles J. Sharp", license: 'CC BY-SA 4.0', licenseUrl: 'https://creativecommons.org/licenses/by-sa/4.0', page: 'https://commons.wikimedia.org/wiki/File:Monk_parakeet_(Myiopsitta_monachus)_Santiago.jpg' },
+  hawk: { file: 'hawk.jpg', pos: 'center', w: 600, h: 450, alt: ["豎起扇形羽毛的鷹頭鸚鵡", "A Hawk-headed Parrot with its fan of feathers raised"], author: "frank wouters", license: 'CC BY 2.0', licenseUrl: 'https://creativecommons.org/licenses/by/2.0', page: 'https://commons.wikimedia.org/wiki/File:Deroptyus_accipitrinus_-head-3.jpg' }
+};

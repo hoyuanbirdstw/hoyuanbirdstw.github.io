@@ -124,6 +124,7 @@ admin-icons/         後台圖示：icon-192.png、icon-512.png、apple-touch-ic
 
 - 內容來自「養鳥知識文章.md」「鸚鵡鳥種資料.md」（已查證，只在本機、列在 .gitignore，不上傳）。內容不要自行改寫，每格都有來源編號
 - 內容是「待店家補充」的欄位在資料裡是 null，網頁不顯示；店家補資料後把 null 換成文字即可
+- 鳥種照片在 photos/species/（11 張，Wikimedia Commons，CC BY／CC BY-SA），作者與授權寫在 care-data.js 底部的 CARE_PHOTOS 和 photos/species/CREDITS.md；換照片時兩邊都要更新，小檔案會自動標註作者、授權和來源。只能用 CC0、Public Domain、CC BY、CC BY-SA
 - 灰鸚鵡 CITES 附錄一會醒目標示；凱克、非洲鸚鵡、各色和尚、鷹頭 4 組 `lowSource: true`，會標「資料來源：飼料公司，非獸醫撰寫」
 - 英文版在 care-data.js、care-topics.js 的第二個字串，頁面固定文字在 care.html 底部的 `EN`、`T`
 
