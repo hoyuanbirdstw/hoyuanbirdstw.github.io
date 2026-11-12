@@ -1,0 +1,24 @@
+name = "hoyuan-keepalive"
+main = "src/index.js"
+compatibility_date = "2025-09-01"
+
+# 沒有網址、不接收任何請求，只有排程會執行它
+workers_dev = false
+preview_urls = false
+
+# 每週一、週四 02:00 UTC（台灣時間 10:00）。用英文縮寫避免星期數字在 cron 裡的歧義
+[triggers]
+crons = ["0 2 * * MON,THU"]
+
+# Workers Logs：每次執行的 console.log 都會留在 Cloudflare 儀表板（Worker → Logs）
+[observability]
+enabled = true
+head_sampling_rate = 1
+
+[observability.logs]
+enabled = true
+invocation_logs = true
+
+# 不要把金鑰寫在這裡。用 wrangler secret 設定：
+#   npx wrangler secret put SUPABASE_URL
+#   npx wrangler secret put SUPABASE_KEY    （Publishable key，sb_publishable_ 開頭）

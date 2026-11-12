@@ -1,0 +1,14 @@
+{
+  "name": "hoyuan-keepalive-worker",
+  "version": "1.0.0",
+  "private": true,
+  "description": "每週一、四讀取 Supabase birds 資料表一筆資料，避免免費專案閒置被暫停",
+  "scripts": {
+    "deploy": "wrangler deploy",
+    "tail": "wrangler tail",
+    "dev": "wrangler dev --test-scheduled"
+  },
+  "devDependencies": {
+    "wrangler": "^4.161.0"
+  }
+}

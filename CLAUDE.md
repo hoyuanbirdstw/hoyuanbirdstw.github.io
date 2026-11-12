@@ -31,6 +31,7 @@ care-data.js         養鳥知識：鳥種資料（11 組，中英文，補資�
 care-topics.js       養鳥知識：共通照顧須知文章資料（5 個主題，中英文）
 admin.html           後台頁面（家人用手機上架「在店鳥寶」），網站上沒有連結，見下方「後台 admin.html」
 admin.webmanifest    後台的 PWA 設定（名稱「禾園鳥坊後台」，加到主畫面後全螢幕）
+keepalive-worker/    Cloudflare Worker：每週排程讀 Supabase，避免免費專案被暫停，見下方「保活排程」
 admin-icons/         後台圖示：icon-192.png、icon-512.png、apple-touch-icon.png（由店徽產生）
 ```
 
@@ -119,6 +120,18 @@ admin-icons/         後台圖示：icon-192.png、icon-512.png、apple-touch-ic
 - 只使用 `window.SUPABASE_CONFIG` 的 Project URL 和 Publishable key，不放任何 secret key。Supabase 的 `update`／`delete` 被 RLS 擋住時不會報錯、只是回傳 0 筆，所以程式有用 `.select('id')` 檢查回傳筆數
 - 加到手機主畫面：iPhone 用 Safari「分享 → 加入主畫面」；Android 用 Chrome 選單「加到主畫面」。圖示是店徽，開啟時全螢幕
 - 修改後台後，用 Playwright 開 `admin.html` 檢查 320、375、414、768、1024 寬度沒有橫向捲軸、按鈕至少 48px。要測登入後的畫面時，攔截 supabase-js 的 URL 換成假的 `window.supabase`（同時要拿掉 `<script>` 的 `integrity`，否則會被擋）。真正的登入、上傳、刪除要用真帳號手動測
+
+## 保活排程 keepalive-worker（Cloudflare Worker）
+
+- 用途：Supabase 免費專案太久沒有活動會被暫停。這個 Worker 定期用 Supabase REST API 讀 `birds` 資料表一筆資料（`/rest/v1/birds?select=id&limit=1`，只帶 `apikey` 標頭），讓專案保持有活動。網站本身不依賴它
+- 時間：每週一、週四 02:00 UTC（台灣時間 10:00），cron 是 `0 2 * * MON,THU`，寫在 `keepalive-worker/wrangler.toml`
+- Cloudflare 帳號：hoyuanbirdstw@gmail.com（Worker 名稱 `hoyuan-keepalive`，workers.dev 子網域 `hoyuanbirds`；Worker 設定 `workers_dev = false`，沒有公開網址，只有排程會執行）
+- 金鑰：`SUPABASE_URL`、`SUPABASE_KEY`（Publishable key）是 Worker 的 secret，**不在任何檔案裡**，也不能寫進 `wrangler.toml`、程式碼或 commit。要更新時：`cd keepalive-worker` 後執行 `npx wrangler secret put SUPABASE_URL`、`npx wrangler secret put SUPABASE_KEY`。換 Supabase 專案時兩個都要重設
+- log：程式每次執行都會用 `console.log`（成功，`{"ok":true,...}`）或 `console.error`（失敗，`{"ok":false,"error":...}`）記錄，失敗時也會丟出錯誤讓 Cloudflare 標成失敗。已開啟 Workers Logs（observability），在 Cloudflare 儀表板的 Worker → Logs 看；即時看用 `npx wrangler tail`
+- 部署與管理：先 `npx wrangler login`（用 hoyuanbirdstw 的帳號，並用 `npx wrangler whoami` 確認），再在 `keepalive-worker/` 執行 `npx wrangler deploy`。改 cron 後重新部署才會生效。要暫停就到儀表板的 Worker → Settings → Triggers 刪掉 Cron Trigger，或刪除 Worker
+- 手動測試：`wrangler dev --remote --test-scheduled` 在這個環境失敗（回 500）。實測可行的做法是暫時把 cron 改成幾分鐘後的時間（例如 `"M * * * *"`）、部署、開 `npx wrangler tail` 看 log，測完**一定要改回 `0 2 * * MON,THU` 並重新部署**
+- 狀態：2026-11-12 部署完成，排程已確認是 `0 2 * * MON,THU`。部署當天手動觸發的那次沒有被 `wrangler tail` 抓到 log，Worker 本身「執行成功」尚未在 log 親眼確認，但直接以同樣的請求打 Supabase 回 HTTP 200。下次週一或週四之後，請到儀表板 Logs 確認有 `"ok":true`
+- `keepalive-worker/node_modules/`、`.wrangler/`、`.dev.vars`、`.env` 已列在 .gitignore
 
 ## 養鳥知識頁 care.html
 
