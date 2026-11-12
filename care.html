@@ -279,7 +279,7 @@
   }
   nav a.current { color: var(--link); }
   .c-main { padding-top: 40px; padding-bottom: 72px; }
-  .c-main h1 { font-size: 32px; margin: 0 0 8px; }
+  .c-main h1 { font-size: 32px; margin: 8px 0 8px; }
   .c-main .lead { max-width: 36em; }
   [hidden] { display: none !important; }
   #sp-list > .lead { margin-top: 20px; }
@@ -359,9 +359,11 @@
   .c-card .c-pill { margin: 4px 0 0; }
 
   /* 小檔案 */
-  .c-back { display: inline-flex; align-items: center; min-height: 48px; padding: 0 18px; margin: 0 0 8px; border: 1.5px solid var(--ink); border-radius: 999px;
-    background: transparent; color: var(--ink); font: inherit; font-weight: 700; cursor: pointer; }
-  .c-back:hover { background: var(--ink); color: var(--bg); }
+  /* 返回按鈕（回首頁、回鳥種列表）：同一個大尺寸樣式 */
+  .c-home, .c-back { display: inline-flex; align-items: center; justify-content: center; min-height: 52px; min-width: 180px; padding: 0 24px; margin: 0 0 16px;
+    border: 2px solid var(--btn-bg); border-radius: 10px; background: var(--bg); color: var(--link); font: inherit; font-size: 18px; font-weight: 700; line-height: 1.3; cursor: pointer; text-decoration: none; }
+  .c-home:hover, .c-back:hover { background: var(--btn-bg); color: var(--btn-ink); }
+  .c-d .c-back:first-child { margin-top: 24px; }
   .c-dname { font-size: 30px; margin: 16px 0 4px; line-height: 1.35; }
   .c-dname:focus { outline: none; }
   .c-names { margin: 0 0 12px; color: var(--muted); }
@@ -385,7 +387,7 @@
   .c-srclist { list-style: none; margin: 0; padding: 0; font-size: 16px; color: var(--muted); }
   .c-srclist li { margin: 0 0 8px; padding-left: 4em; text-indent: -4em; overflow-wrap: anywhere; }
   .c-srclist .c-n { display: inline-block; min-width: 4em; text-indent: 0; }
-  .c-d .c-back.bottom { margin-top: 24px; }
+  .c-d .c-back.bottom { margin: 28px 0 0; }
 
   @media (max-width: 700px) {
     .c-main { padding-top: 28px; }
@@ -427,6 +429,7 @@
 </header>
 
 <main class="wrap c-main">
+  <a class="c-home" href="index.html" data-i18n="c_home">← 回首頁</a>
   <h1 class="center" data-i18n="c_title">養鳥知識</h1>
   <p class="lead center" data-i18n="c_lead">照顧鳥寶的基本知識，以及各種鳥的小檔案。</p>
 
@@ -477,6 +480,7 @@ var EN = {
   nav_home: "Home", nav_birds: "Our Birds", nav_supplies: "Supplies", nav_care: "Bird Care",
   nav_about: "About Us", nav_gallery: "Gallery", nav_trade: "Import & Export", nav_visit: "Visit Us",
   follow: "Follow Us", copy: "© Hoyuan Birds", helper: "Ask Us",
+  c_home: "← Back to Home",
   c_title: "Bird Care",
   c_lead: "Basic care knowledge, plus a profile for each kind of bird.",
   tab_species: "By Species", tab_common: "General Care",
