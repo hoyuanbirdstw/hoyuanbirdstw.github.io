@@ -26,6 +26,9 @@ birds/       鳥的照片（檔名用英文或數字，例如 bunchou-01.jpg）
 photos/      其他照片：hero.jpg（首頁主視覺）、shop-01.jpg ~ shop-05.jpg（店面照片，目前尚未放入）
 supabase-config.js   Supabase 連線設定（Project URL + Publishable key），網站和後台頁面都讀它
 supabase/setup.sql   Supabase 資料庫設定（資料表、權限、照片空間），在 Supabase SQL Editor 執行
+care.html            養鳥知識頁（分頁：依鳥種查詢／共通照顧須知；網址 # 對應：#species、#species/<id>、#beginner #feed #daily #health #faq）。頁首、頁尾、CSS 是從 index.html 複製的，改 index 的共用部分時要同步改這裡；頁面右下角 #helper 的 LINE 連結也要和 index.html 一致
+care-data.js         養鳥知識：鳥種資料（11 組，中英文，補資料只改這個檔；中文寫 null 的列不顯示）
+care-topics.js       養鳥知識：共通照顧須知文章資料（5 個主題，中英文）
 admin.html           後台頁面（家人用手機上架「在店鳥寶」），網站上沒有連結，見下方「後台 admin.html」
 admin.webmanifest    後台的 PWA 設定（名稱「禾園鳥坊後台」，加到主畫面後全螢幕）
 admin-icons/         後台圖示：icon-192.png、icon-512.png、apple-touch-icon.png（由店徽產生）
@@ -116,6 +119,13 @@ admin-icons/         後台圖示：icon-192.png、icon-512.png、apple-touch-ic
 - 只使用 `window.SUPABASE_CONFIG` 的 Project URL 和 Publishable key，不放任何 secret key。Supabase 的 `update`／`delete` 被 RLS 擋住時不會報錯、只是回傳 0 筆，所以程式有用 `.select('id')` 檢查回傳筆數
 - 加到手機主畫面：iPhone 用 Safari「分享 → 加入主畫面」；Android 用 Chrome 選單「加到主畫面」。圖示是店徽，開啟時全螢幕
 - 修改後台後，用 Playwright 開 `admin.html` 檢查 320、375、414、768、1024 寬度沒有橫向捲軸、按鈕至少 48px。要測登入後的畫面時，攔截 supabase-js 的 URL 換成假的 `window.supabase`（同時要拿掉 `<script>` 的 `integrity`，否則會被擋）。真正的登入、上傳、刪除要用真帳號手動測
+
+## 養鳥知識頁 care.html
+
+- 內容來自「養鳥知識文章.md」「鸚鵡鳥種資料.md」（已查證，只在本機、列在 .gitignore，不上傳）。內容不要自行改寫，每格都有來源編號
+- 內容是「待店家補充」的欄位在資料裡是 null，網頁不顯示；店家補資料後把 null 換成文字即可
+- 灰鸚鵡 CITES 附錄一會醒目標示；凱克、非洲鸚鵡、各色和尚、鷹頭 4 組 `lowSource: true`，會標「資料來源：飼料公司，非獸醫撰寫」
+- 英文版在 care-data.js、care-topics.js 的第二個字串，頁面固定文字在 care.html 底部的 `EN`、`T`
 
 ## 英文翻譯
 

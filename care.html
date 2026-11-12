@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>養鳥知識｜禾園鳥坊</title>
+<meta name="description" content="禾園鳥坊的養鳥知識：新手入門、飼料怎麼選、日常照顧、健康警訊、新手問答，以及金剛、錐尾、傘巴、灰鸚鵡等各種鳥的小檔案。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+    --bg: #FFFFFF;
+    --ink: #1A1718;
+    --muted: #5E6466;
+    --link: #C7390A;
+    --line: #E3E6E6;
+    --board: #1A1718;
+    --icon-ink: #FFFFFF;
+    --btn-bg: #C7390A;
+    --btn-ink: #FFFFFF;
+    --tint: #EDF3F4;
+    --nav: #333333;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #121011;
+      --ink: #F2EFEF;
+      --muted: #A9B3B5;
+      --link: #F0A624;
+      --line: #2E2A2B;
+      --board: #84A2A7;
+      --icon-ink: #121011;
+      --btn-bg: #F0A624;
+      --btn-ink: #121011;
+      --tint: #172022;
+      --nav: #F2EFEF;
+      color-scheme: dark;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 90px; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: Arial, "Microsoft JhengHei", "微軟正黑體", "PingFang TC", "Noto Sans TC", sans-serif;
+    font-size: 17px; line-height: 1.75;
+  }
+  a { color: var(--link); }
+  a, button { touch-action: manipulation; -webkit-tap-highlight-color: rgba(199,57,10,.18); }
+  a:focus-visible, button:focus-visible { outline: 3px solid #F0A624; outline-offset: 3px; border-radius: 4px; }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 24px; }
+  h1, h2, h3 { font-weight: 700; letter-spacing: 0.02em; }
+  .center { text-align: center; margin-left: auto; margin-right: auto; }
+  .fill { background: var(--tint); color: var(--muted); padding: 0 6px; border-radius: 4px; }
+
+  /* 頁首 */
+  header { position: sticky; top: 0; z-index: 40; background: var(--bg); border-bottom: 1px solid var(--line); }
+  .bar { max-width: 1240px; margin: 0 auto; padding: 16px 24px; display: flex; align-items: center; gap: 24px; }
+  .brand { display: flex; align-items: center; gap: 10px; min-width: 0; min-height: 44px; font-size: 22px; font-weight: 700; color: var(--ink); text-decoration: none; white-space: nowrap; }
+  .brand img { flex: none; }
+  .brand span { overflow: hidden; text-overflow: ellipsis; }
+  .brand img { border-radius: 8px; background: #FFFFFF; }
+  nav { margin-left: auto; }
+  nav ul { list-style: none; display: flex; flex-wrap: wrap; gap: 4px 24px; margin: 0; padding: 0; }
+  nav a { display: block; padding: 10px 0; line-height: 1.5; color: var(--nav); text-decoration: none; font-size: 17px; font-weight: 700; letter-spacing: 0.08em; white-space: nowrap; }
+  nav a:hover { color: var(--link); }
+  html[lang="en"] nav a { letter-spacing: 0.01em; font-size: 16px; }
+  html[lang="en"] nav ul { column-gap: 18px; }
+  .lang { flex: none; border: 1.5px solid var(--ink); background: transparent; color: var(--ink); font: inherit; font-size: 15px; font-weight: 700; padding: 5px 12px; border-radius: 999px; cursor: pointer; }
+  .lang { display: inline-flex; align-items: center; gap: 6px; padding: 5px 14px 5px 10px; min-height: 44px; }
+  .lang svg { width: 18px; height: 18px; flex: none; }
+  .lang-hint { font-weight: 400; font-size: 14px; opacity: .7; padding-right: 6px; border-right: 1px solid currentColor; }
+  .lang:hover { background: var(--ink); color: var(--bg); }
+  /* 手機選單按鈕（電腦版隱藏） */
+  .menu-btn { display: none; flex: none; align-items: center; gap: 8px; min-height: 44px; padding: 0 14px; border: 1.5px solid var(--ink); border-radius: 999px; background: transparent; color: var(--ink); font: inherit; font-size: 17px; font-weight: 700; cursor: pointer; }
+  .menu-btn svg { width: 22px; height: 22px; flex: none; }
+  .menu-btn .i-close, .menu-btn[aria-expanded="true"] .i-open { display: none; }
+  .menu-btn[aria-expanded="true"] .i-close { display: block; }
+  .menu-btn[aria-expanded="true"] { background: var(--ink); color: var(--bg); }
+
+  /* 主視覺 */
+  .hero { position: relative; min-height: 560px; display: flex; align-items: center; padding: 80px 0;
+    background: #1A1718; box-shadow: 0 0 0 100vmax #1A1718; clip-path: inset(0 -100vmax); }
+  .hero-bg { position: absolute; top: 0; left: 50%; width: 100vw; height: 100%; margin-left: -50vw; object-fit: cover; object-position: 70% 0%; }
+  .hero::after { content: ""; position: absolute; top: 0; bottom: 0; left: 50%; width: 100vw; margin-left: -50vw;
+    background: linear-gradient(90deg, rgba(0,0,0,.75) 0%, rgba(0,0,0,.5) 35%, rgba(0,0,0,0) 65%); }
+  .hero-text { position: relative; z-index: 1; color: #FFFFFF; }
+  .hero h1 { font-size: clamp(30px, 4.4vw, 46px); line-height: 1.35; margin: 0 0 18px; max-width: 12em; }
+  .hero p { margin: 0 0 28px; max-width: 21em; color: rgba(255,255,255,.9); }
+  .actions { display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn { display: inline-block; padding: 12px 22px; border-radius: 6px; text-decoration: none; font-weight: 700; }
+  .btn-main { background: var(--btn-bg); color: var(--btn-ink); }
+  .btn-sub { border: 1.5px solid var(--link); color: var(--link); }
+  .hero .btn-sub { border-color: #FFFFFF; color: #FFFFFF; }
+  .trade-pill { display: inline-flex; align-items: center; gap: 8px; margin-top: 28px; padding: 8px 16px; min-height: 44px; border-radius: 999px;
+    background: rgba(255,255,255,.18); color: #FFFFFF; text-decoration: none; font-size: 16px; }
+  .trade-pill:hover { background: rgba(255,255,255,.26); }
+  .trade-pill .ico { width: 20px; height: 20px; flex: none; }
+
+  /* 區塊 */
+  section { padding: 64px 0; border-top: 1px solid var(--line); }
+  section h2 { font-size: 32px; margin: 0 0 8px; }
+  .lead { color: var(--muted); margin: 0 0 8px; max-width: 34em; }
+  .lead.center { margin-left: auto; margin-right: auto; }
+  .tinted { background: var(--tint); box-shadow: 0 0 0 100vmax var(--tint); clip-path: inset(0 -100vmax); border-top: none; }
+
+  /* 圓形圖示 */
+  .icons { display: grid; gap: 40px 24px; margin-top: 40px; }
+  .icons.four { grid-template-columns: repeat(4, 1fr); }
+  .item { display: flex; flex-direction: column; align-items: center; text-align: center; text-decoration: none; color: var(--ink); }
+  .circle { width: 132px; height: 132px; border-radius: 50%; background: var(--board); display: grid; place-items: center; }
+  .circle.small { width: 104px; height: 104px; }
+  .circle svg { width: 52%; height: 52%; fill: var(--icon-ink); }
+  .circle .cut { fill: var(--board); }
+  .circle .cut-line { fill: none; stroke: var(--board); stroke-width: 2.5; stroke-linecap: round; }
+  .circle .cut-line.thick { stroke-width: 5; stroke-linejoin: round; }
+  .circle .stroke { fill: none; stroke: var(--icon-ink); stroke-width: 4; stroke-linecap: round; }
+  .label { margin-top: 18px; background: var(--btn-bg); color: var(--btn-ink); font-weight: 700; font-size: 19px; padding: 10px 26px; border-radius: 6px; letter-spacing: 0.05em; }
+  a.item:hover .label { text-decoration: underline; }
+  .item h3 { font-size: 22px; margin: 18px 0 4px; }
+  .item p { margin: 0; color: var(--muted); font-size: 17px; max-width: 16em; }
+  /* 無圈圈版：小圖示＋細分隔線 */
+  .plain { --cut: var(--bg); gap: 0; }
+  .tinted .plain { --cut: var(--tint); }
+  .plain .item { padding: 8px 20px; }
+  .plain .item + .item { border-left: 1px solid var(--line); }
+  .plain .circle, .plain .circle.small { width: auto; height: auto; background: none; border-radius: 0; }
+  .plain .circle svg { width: 46px; height: 46px; fill: var(--link); }
+  .plain .circle .cut { fill: var(--cut); }
+  .plain .circle .cut-line { stroke: var(--cut); }
+  .plain .circle .stroke { stroke: var(--link); }
+  .plain .item h3 { margin-top: 12px; }
+  .tinted .plain .item + .item { border-left-color: #D3DDDF; }
+  .ask { margin: 44px auto 0; color: var(--muted); font-size: 19px; }
+  .ask a { font-weight: 700; display: inline-block; padding: 6px 2px; margin: -6px 0; }
+
+  /* 販售鳥類 */
+  .bird-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 28px; margin-top: 40px; }
+  .bird { margin: 0; }
+  .bird-photo { position: relative; aspect-ratio: 1; border-radius: 8px; overflow: hidden; background: var(--tint); display: grid; place-items: center; }
+  .bird-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .bird-photo svg { width: 40%; fill: var(--muted); opacity: .5; }
+  .badge { position: absolute; top: 10px; left: 10px; font-size: 14px; font-weight: 700; padding: 3px 10px; border-radius: 4px; background: var(--btn-bg); color: var(--btn-ink); }
+  .badge.reserved { background: #F0A624; color: #1A1718; }
+  .badge.sold { background: #6B6B6B; color: #FFFFFF; }
+  .bird.is-sold .bird-photo img, .bird.is-sold .bird-photo svg { filter: grayscale(1); opacity: .55; }
+  .bird figcaption { padding-top: 12px; }
+  .bird h3 { font-size: 19px; margin: 0 0 2px; }
+  .bird p { margin: 0; color: var(--muted); font-size: 16px; }
+  .bird .price { color: var(--ink); font-weight: 700; margin-top: 6px; font-size: 17px; }
+
+  /* 關於本店 */
+  .about { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+  .about p { margin: 0 0 16px; }
+  .photo { aspect-ratio: 4 / 3; border: 2px dashed var(--line); border-radius: 6px; display: grid; place-items: center; color: var(--muted); font-size: 16px; text-align: center; padding: 16px; }
+
+  /* 店面照片 */
+  .gallery { display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: 200px; gap: 12px; margin-top: 36px; }
+  .shot { position: relative; padding: 0; border: 0; border-radius: 8px; overflow: hidden; background: var(--tint); cursor: zoom-in; font: inherit; color: var(--muted); }
+  .shot.big { grid-column: span 2; grid-row: span 2; }
+  .shot img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .shot .ph { display: none; }
+  .shot.empty { cursor: default; border: 2px dashed var(--line); }
+  .shot.empty .ph { display: grid; place-items: center; height: 100%; text-align: center; font-size: 16px; }
+  .shot.empty .ph small { font-size: 14px; }
+  .viewer { border: 0; padding: 0; background: transparent; max-width: 92vw; max-height: 90vh; }
+  .viewer::backdrop { background: rgba(0,0,0,.82); }
+  .viewer img { display: block; max-width: 92vw; max-height: 86vh; border-radius: 6px; }
+  .viewer button { position: absolute; top: 8px; right: 8px; width: 44px; height: 44px; border: 0; border-radius: 50%; background: #FFFFFF; color: #1A1718; font-size: 22px; cursor: pointer; }
+
+  /* 進出口 */
+  .trade-contact { margin-top: 40px; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+  .trade-contact p { margin: 0; color: var(--muted); }
+
+  /* 到店資訊 */
+  .visit { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
+  dl { margin: 0; display: grid; grid-template-columns: 5.5em 1fr; row-gap: 14px; }
+  dt { color: var(--muted); }
+  dd { margin: 0; }
+  dd a { display: inline-block; padding: 8px 0; margin: -8px 0; }
+  .map { margin-top: 48px; height: 420px; background: var(--tint); box-shadow: 0 0 0 100vmax var(--tint); clip-path: inset(0 -100vmax); display: grid; place-items: center; color: var(--muted); }
+  .map p { margin: 0; }
+  .map iframe { width: 100vw; max-width: none; height: 100%; border: 0; margin-left: calc(50% - 50vw); justify-self: start; }
+  .rating { display: inline-block; padding: 8px 0; margin: -8px 0 10px; font-size: 16px; color: var(--ink); text-decoration: none; }
+  .rating:hover { text-decoration: underline; }
+  .rating .star { color: #F0A624; }
+  .transit-title { font-size: 24px; margin: 40px 0 16px; }
+  .transit { grid-template-columns: 5.5em 1fr; }
+
+  /* 頁尾 */
+  footer { background: #1A1718; color: #FFFFFF; padding: 44px 0 96px; text-align: center; }
+  .follow-title { font-size: 20px; margin: 0 0 18px; }
+  .social { list-style: none; display: flex; justify-content: center; gap: 28px; margin: 0 0 28px; padding: 0; }
+  .social a { color: #FFFFFF; width: 52px; height: 52px; display: flex; align-items: center; justify-content: center; text-decoration: none; }
+  .social svg { width: 34px; height: 34px; fill: currentColor; }
+  .social a:hover { color: #F0A624; }
+  .copy { margin: 0; color: #A9A4A5; font-size: 15px; }
+
+  /* 小幫手 */
+  .helper { position: fixed; right: 20px; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); z-index: 30; /* 比頁首(40)低，手機選單展開時不會被擋住 */
+    display: flex; align-items: center; gap: 8px; padding: 12px 20px 12px 16px;
+    background: var(--btn-bg); color: var(--btn-ink); text-decoration: none; font-weight: 700;
+    border-radius: 999px; box-shadow: 0 6px 18px rgba(0,0,0,.22); }
+  .helper { transition: opacity .2s, transform .2s, visibility .2s; }
+  .helper svg { width: 26px; height: 26px; fill: var(--btn-ink); }
+
+  /* 電腦版選單較窄時：一行放得下就好，不放提示字 */
+  @media (min-width: 1021px) and (max-width: 1200px) {
+    .bar { gap: 16px; }
+    .brand { font-size: 20px; }
+    .lang-hint { display: none; }
+    nav ul, html[lang="en"] nav ul { column-gap: 14px; }
+    nav a, html[lang="en"] nav a { font-size: 16px; letter-spacing: .02em; }
+  }
+  /* 手機與平板：「選單」按鈕 + 直向選單 */
+  @media (max-width: 1020px) {
+    .bar { flex-wrap: nowrap; padding: 8px 12px; gap: 8px; }
+    .brand { font-size: 20px; gap: 8px; min-height: 44px; }
+    .brand img { width: 36px; height: 36px; }
+    .lang { margin-left: auto; padding: 0 12px 0 10px; }
+    .lang-hint { display: none; }
+    .menu-btn { display: inline-flex; }
+    html[lang="en"] .brand { font-size: 18px; }
+    nav { position: absolute; top: 100%; left: 0; right: 0; margin: 0; display: none; background: var(--bg);
+      border-bottom: 1px solid var(--line); box-shadow: 0 14px 24px rgba(0,0,0,.14); max-height: calc(100vh - 70px); overflow-y: auto; }
+    header.open nav { display: block; }
+    nav ul { flex-direction: column; flex-wrap: nowrap; gap: 0; padding: 4px 16px 12px; }
+    nav li + li { border-top: 1px solid var(--line); }
+    nav a, html[lang="en"] nav a { display: block; padding: 14px 6px; min-height: 54px; font-size: 20px; letter-spacing: .04em; white-space: normal; }
+  }
+  /* 手機與直向平板：主視覺改成上圖下字，小幫手在主視覺還在畫面時先收起來，避免蓋到主視覺的連結 */
+  @media (max-width: 900px) {
+    .helper.away { opacity: 0; visibility: hidden; transform: translateY(12px); }
+    .hero { min-height: 0; align-items: flex-start; padding: clamp(250px, 62vw, 400px) 0 40px; }
+    .hero-bg { height: clamp(250px, 62vw, 400px); object-position: 68% 20%; }
+    .hero::after { bottom: auto; height: clamp(250px, 62vw, 400px); background: linear-gradient(180deg, rgba(26,23,24,0) 50%, #1A1718 100%); }
+  }
+  @media (max-width: 400px) {
+    .bar { gap: 6px; padding: 8px 10px; }
+    .brand { font-size: 19px; gap: 6px; }
+    .brand img { width: 32px; height: 32px; }
+    html[lang="en"] .brand { font-size: 17px; }
+    .lang { padding: 0 10px 0 8px; gap: 4px; }
+    .menu-btn { padding: 0 12px; gap: 6px; }
+  }
+  @media (max-width: 760px) {
+    .about, .visit { grid-template-columns: 1fr; }
+    .icons.four { grid-template-columns: repeat(2, 1fr); }
+    .plain { row-gap: 28px; }
+    .plain .item + .item { border-left: none; }
+    .plain .item:nth-child(even) { border-left: 1px solid var(--line); }
+    .circle { width: 108px; height: 108px; }
+    .circle.small { width: 92px; height: 92px; }
+    .label { font-size: 17px; padding: 9px 18px; }
+    .gallery { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 150px; }
+    .map { height: 320px; }
+    .helper { padding: 14px; }
+    .helper span { display: none; }
+  }
+
+  /* ===== 養鳥知識頁專用 ===== */
+  :root {
+    --shop-bg: #FFF1E6;
+    --warn-bg: #FFF8E1;
+    --cites-bg: #FDECEA;
+    --cites-i: #B3261E;
+    --cites-ink: #FFFFFF;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --shop-bg: #2B2016;
+      --warn-bg: #272115;
+      --cites-bg: #2E1A19;
+      --cites-i: #F2756B;
+      --cites-ink: #121011;
+    }
+  }
+  nav a.current { color: var(--link); }
+  .c-main { padding-top: 40px; padding-bottom: 72px; }
+  .c-main h1 { font-size: 32px; margin: 0 0 8px; }
+  .c-main .lead { max-width: 36em; }
+  [hidden] { display: none !important; }
+  #sp-list > .lead { margin-top: 20px; }
+
+  /* 兩個分頁 */
+  .c-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 28px auto 0; max-width: 640px; scroll-margin-top: 90px; }
+  .c-tab { min-height: 56px; padding: 8px 12px; border: 2px solid var(--btn-bg); border-radius: 10px; background: var(--bg); color: var(--link);
+    font: inherit; font-size: 18px; font-weight: 700; line-height: 1.4; cursor: pointer; }
+  .c-tab[aria-selected="true"] { background: var(--btn-bg); color: var(--btn-ink); }
+  html[lang="en"] .c-tab { font-size: 17px; }
+
+  /* 五個主題按鈕 */
+  .c-topics { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin: 28px 0 8px; }
+  .c-topic { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; min-height: 104px; padding: 14px 8px;
+    border: 2px solid var(--line); border-radius: 12px; background: var(--bg); color: var(--ink); font: inherit; font-size: 17px; font-weight: 700; line-height: 1.35; cursor: pointer; text-align: center; }
+  .c-topic:hover { border-color: var(--link); }
+  .c-topic svg { width: 40px; height: 40px; fill: var(--link); flex: none; }
+  .c-topic .cut { fill: var(--bg); }
+  .c-topic .cut-line { fill: none; stroke: var(--bg); stroke-width: 2.5; stroke-linecap: round; }
+  .c-topic .cut-line.thick { stroke-width: 5; stroke-linejoin: round; }
+  .c-topic[aria-pressed="true"] { background: var(--btn-bg); border-color: var(--btn-bg); color: var(--btn-ink); }
+  .c-topic[aria-pressed="true"] svg { fill: var(--btn-ink); }
+  .c-topic[aria-pressed="true"] .cut { fill: var(--btn-bg); }
+  .c-topic[aria-pressed="true"] .cut-line { stroke: var(--btn-bg); }
+
+  /* 主題內容 */
+  .c-head { margin: 36px 0 20px; }
+  .c-head h2 { font-size: 28px; margin: 0 0 4px; }
+  .c-head p { margin: 0; color: var(--muted); }
+  .c-intro { color: var(--muted); font-size: 16px; margin: 0 0 20px; }
+  .c-q { display: block; border: 1.5px solid var(--line); border-radius: 10px; margin: 0 0 12px; background: var(--bg); }
+  .c-q > summary, a.c-q { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 56px; padding: 12px 16px;
+    font-size: 18px; font-weight: 700; line-height: 1.5; cursor: pointer; list-style: none; color: var(--ink); text-decoration: none; }
+  .c-q > summary::-webkit-details-marker { display: none; }
+  .c-q > summary::after, a.c-q::after { content: ""; flex: none; width: 11px; height: 11px; margin-right: 4px; border-right: 3px solid var(--link); border-bottom: 3px solid var(--link); transform: rotate(45deg); transition: transform .2s; }
+  .c-q[open] { border-color: var(--link); }
+  .c-q[open] > summary::after { transform: rotate(-135deg); }
+  a.c-q { background: var(--tint); border-color: var(--btn-bg); margin-top: 20px; }
+  a.c-q::after { transform: rotate(-45deg); }
+  a.c-q small { display: block; font-weight: 400; font-size: 16px; color: var(--muted); }
+  .c-a { padding: 2px 18px 16px; }
+  .c-a p { margin: 0 0 12px; }
+  .c-a ul, .c-a ol { margin: 0 0 12px; padding-left: 1.4em; }
+  .c-a li { margin: 0 0 8px; }
+  .c-a > :last-child { margin-bottom: 0; }
+  .rk { color: var(--muted); font-size: 16px; white-space: nowrap; }
+  .c-shop { margin: 0 0 12px; padding: 12px 16px; background: var(--shop-bg); border: 1.5px solid var(--link); border-left-width: 6px; border-radius: 8px; }
+  .c-shop b.c-shop-label { display: block; color: var(--link); margin-bottom: 2px; }
+  .c-shop-body { margin: 0; }
+
+  .c-refs { margin-top: 28px; border-top: 1px solid var(--line); padding-top: 12px; }
+  .c-refs > summary { display: flex; align-items: center; justify-content: space-between; min-height: 48px; padding: 6px 4px; font-weight: 700; color: var(--muted); cursor: pointer; list-style: none; }
+  .c-refs > summary::-webkit-details-marker { display: none; }
+  .c-refs > summary::after { content: ""; width: 10px; height: 10px; margin-right: 6px; border-right: 3px solid var(--muted); border-bottom: 3px solid var(--muted); transform: rotate(45deg); transition: transform .2s; }
+  .c-refs[open] > summary::after { transform: rotate(-135deg); }
+  .c-refs ul, .c-refs ol { margin: 4px 0 8px; padding-left: 1.4em; font-size: 16px; color: var(--muted); }
+  .c-refs li { margin: 0 0 8px; overflow-wrap: anywhere; }
+  .c-refs ul.plain-list { list-style: none; padding-left: 0; }
+  .c-disc { margin: 14px 0 0; padding: 12px 14px; background: var(--tint); border-radius: 8px; font-size: 16px; color: var(--muted); }
+
+  /* 鳥種卡片 */
+  .c-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 14px; margin-top: 24px; }
+  .c-card { display: flex; align-items: center; gap: 14px; width: 100%; min-height: 96px; padding: 14px 16px; text-align: left;
+    border: 1.5px solid var(--line); border-radius: 12px; background: var(--bg); color: var(--ink); font: inherit; cursor: pointer; }
+  .c-card:hover { border-color: var(--link); }
+  .c-ico { flex: none; width: 52px; height: 52px; border-radius: 50%; background: var(--board); display: grid; place-items: center; }
+  .c-ico svg { width: 28px; height: 28px; fill: var(--icon-ink); }
+  .c-card-t { min-width: 0; flex: 1; }
+  .c-name { display: block; font-size: 19px; font-weight: 700; line-height: 1.35; }
+  .c-mem { display: block; margin-top: 2px; font-size: 16px; color: var(--muted); line-height: 1.5; }
+  .c-card::after { content: ""; flex: none; width: 10px; height: 10px; border-right: 3px solid var(--link); border-bottom: 3px solid var(--link); transform: rotate(-45deg); }
+  .c-card .c-pill { margin: 4px 0 0; }
+
+  /* 小檔案 */
+  .c-back { display: inline-flex; align-items: center; min-height: 48px; padding: 0 18px; margin: 0 0 8px; border: 1.5px solid var(--ink); border-radius: 999px;
+    background: transparent; color: var(--ink); font: inherit; font-weight: 700; cursor: pointer; }
+  .c-back:hover { background: var(--ink); color: var(--bg); }
+  .c-dname { font-size: 30px; margin: 16px 0 4px; line-height: 1.35; }
+  .c-dname:focus { outline: none; }
+  .c-names { margin: 0 0 12px; color: var(--muted); }
+  .c-sold { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin: 0 0 8px; }
+  .c-tag { display: inline-block; background: var(--btn-bg); color: var(--btn-ink); font-weight: 700; padding: 2px 12px; border-radius: 6px; }
+  .c-pill { display: inline-block; border: 1.5px solid var(--muted); color: var(--ink); font-weight: 700; padding: 1px 12px; border-radius: 999px; }
+  .c-pill.i { background: var(--cites-i); border-color: var(--cites-i); color: var(--cites-ink); }
+  .c-d h3 { font-size: 22px; margin: 32px 0 12px; }
+  .c-tablewrap { border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+  .c-table { width: 100%; border-collapse: collapse; }
+  .c-table th, .c-table td { padding: 12px 14px; text-align: left; vertical-align: top; border-top: 1px solid var(--line); }
+  .c-table tr:first-child th, .c-table tr:first-child td { border-top: none; }
+  .c-table th { width: 9em; font-weight: 700; background: var(--tint); }
+  html[lang="en"] .c-table th { width: 11em; }
+  .c-table td { overflow-wrap: anywhere; }
+  .c-st { color: var(--muted); font-size: 16px; white-space: nowrap; }
+  .c-table tr.cites-i th, .c-table tr.cites-i td { background: var(--cites-bg); }
+  .c-table tr.cites-i td { border-top-color: var(--cites-i); }
+  .c-table tr.cites-i { outline: 2px solid var(--cites-i); outline-offset: -2px; }
+  .c-warn { margin: 0 0 14px; padding: 12px 14px; background: var(--warn-bg); border-left: 6px solid #F0A624; border-radius: 6px; font-weight: 700; }
+  .c-srclist { list-style: none; margin: 0; padding: 0; font-size: 16px; color: var(--muted); }
+  .c-srclist li { margin: 0 0 8px; padding-left: 4em; text-indent: -4em; overflow-wrap: anywhere; }
+  .c-srclist .c-n { display: inline-block; min-width: 4em; text-indent: 0; }
+  .c-d .c-back.bottom { margin-top: 24px; }
+
+  @media (max-width: 700px) {
+    .c-main { padding-top: 28px; }
+    .c-main h1 { font-size: 28px; }
+    .c-topics { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .c-topic { min-height: 96px; font-size: 17px; }
+    .c-topic:last-child { grid-column: span 2; }
+    .c-head h2, .c-dname { font-size: 26px; }
+    .c-q > summary, a.c-q { font-size: 17px; }
+    .c-a { padding: 2px 14px 14px; }
+    .c-table, .c-table tbody, .c-table tr, .c-table th, .c-table td { display: block; width: 100% !important; }
+    .c-table th { padding: 10px 14px 4px; border-top: 1px solid var(--line); }
+    .c-table tr:first-child th { border-top: none; }
+    .c-table td { padding: 4px 14px 12px; border-top: none !important; }
+    .c-table tr.cites-i td { border-top: none; }
+  }
+</style>
+</head>
+<body>
+
+<header id="top">
+  <div class="bar">
+    <a class="brand" href="index.html"><img src="data:image/jpeg;base64,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" alt="" width="40" height="40"><span data-i18n="brand">禾園鳥坊</span></a>
+    <nav id="site-nav" aria-label="主選單">
+      <ul>
+        <li><a href="index.html" data-i18n="nav_home">首頁</a></li>
+        <li><a href="index.html#birds" data-i18n="nav_birds">在店鳥寶</a></li>
+        <li><a href="index.html#supplies" data-i18n="nav_supplies">鳥用品</a></li>
+        <li><a href="care.html" class="current" aria-current="page" data-i18n="nav_care">養鳥知識</a></li>
+        <li><a href="index.html#about" data-i18n="nav_about">關於本店</a></li>
+        <li><a href="index.html#gallery" data-i18n="nav_gallery">店面照片</a></li>
+        <li><a href="index.html#trade" data-i18n="nav_trade">進出口貿易</a></li>
+        <li><a href="index.html#visit" data-i18n="nav_visit">到店資訊</a></li>
+      </ul>
+    </nav>
+    <button class="lang" id="lang" type="button" title="切換語言 / Language"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.5" fill="none" stroke="currentColor" stroke-width="1.8"/><ellipse cx="12" cy="12" rx="4" ry="9.5" fill="none" stroke="currentColor" stroke-width="1.6"/><line x1="2.5" y1="12" x2="21.5" y2="12" stroke="currentColor" stroke-width="1.6"/></svg><span class="lang-hint">語言</span><span class="lang-to" id="lang-to">English</span></button>
+    <button class="menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav"><svg class="i-open" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg><svg class="i-close" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg><span data-i18n="menu">選單</span></button>
+  </div>
+</header>
+
+<main class="wrap c-main">
+  <h1 class="center" data-i18n="c_title">養鳥知識</h1>
+  <p class="lead center" data-i18n="c_lead">照顧鳥寶的基本知識，以及各種鳥的小檔案。</p>
+
+  <div class="c-tabs" id="c-tabs" role="tablist">
+    <button class="c-tab" id="tab-species" role="tab" type="button" aria-controls="panel-species" aria-selected="false" data-i18n="tab_species">依鳥種查詢</button>
+    <button class="c-tab" id="tab-common" role="tab" type="button" aria-controls="panel-common" aria-selected="false" data-i18n="tab_common">共通照顧須知</button>
+  </div>
+
+  <div id="panel-species" role="tabpanel" aria-labelledby="tab-species" hidden>
+    <div id="sp-list">
+      <p class="lead" data-i18n="sp_lead">以下鳥種本店都有販售過，但不一定隨時有貨，請先 <a href="#" data-line>LINE 詢問</a>。點選鳥種，看牠的小檔案。</p>
+      <div class="c-grid" id="sp-grid"></div>
+    </div>
+    <div id="sp-detail" class="c-d" hidden></div>
+  </div>
+
+  <div id="panel-common" role="tabpanel" aria-labelledby="tab-common" hidden>
+    <div class="c-topics" id="c-topics"></div>
+    <div id="topic-body"></div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <h2 class="follow-title" data-i18n="follow">關注我們</h2>
+    <!-- Facebook、LINE 圖示取自 Font Awesome Free 6.5.2（CC BY 4.0，https://fontawesome.com/license/free） -->
+    <ul class="social">
+      <li><a href="https://www.facebook.com/share/1EBhryXe36/" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 512 512" aria-hidden="true"><path d="M512 256C512 114.6 397.4 0 256 0S0 114.6 0 256C0 376 82.7 476.8 194.2 504.5V334.2H141.4V256h52.8V222.3c0-87.1 39.4-127.5 125-127.5c16.2 0 44.2 3.2 55.7 6.4V172c-6-.6-16.5-1-29.6-1c-42 0-58.2 15.9-58.2 57.2V256h83.6l-14.4 78.2H287V510.1C413.8 494.8 512 386.9 512 256h0z"/></svg></a></li>
+      <li><a href="#" data-line aria-label="LINE"><svg viewBox="0 0 512 512" aria-hidden="true"><path d="M311 196.8v81.3c0 2.1-1.6 3.7-3.7 3.7h-13c-1.3 0-2.4-.7-3-1.5l-37.3-50.3v48.2c0 2.1-1.6 3.7-3.7 3.7h-13c-2.1 0-3.7-1.6-3.7-3.7V196.9c0-2.1 1.6-3.7 3.7-3.7h12.9c1.1 0 2.4 .6 3 1.6l37.3 50.3V196.9c0-2.1 1.6-3.7 3.7-3.7h13c2.1-.1 3.8 1.6 3.8 3.5zm-93.7-3.7h-13c-2.1 0-3.7 1.6-3.7 3.7v81.3c0 2.1 1.6 3.7 3.7 3.7h13c2.1 0 3.7-1.6 3.7-3.7V196.8c0-1.9-1.6-3.7-3.7-3.7zm-31.4 68.1H150.3V196.8c0-2.1-1.6-3.7-3.7-3.7h-13c-2.1 0-3.7 1.6-3.7 3.7v81.3c0 1 .3 1.8 1 2.5c.7 .6 1.5 1 2.5 1h52.2c2.1 0 3.7-1.6 3.7-3.7v-13c0-1.9-1.6-3.7-3.5-3.7zm193.7-68.1H327.3c-1.9 0-3.7 1.6-3.7 3.7v81.3c0 1.9 1.6 3.7 3.7 3.7h52.2c2.1 0 3.7-1.6 3.7-3.7V265c0-2.1-1.6-3.7-3.7-3.7H344V247.7h35.5c2.1 0 3.7-1.6 3.7-3.7V230.9c0-2.1-1.6-3.7-3.7-3.7H344V213.5h35.5c2.1 0 3.7-1.6 3.7-3.7v-13c-.1-1.9-1.7-3.7-3.7-3.7zM512 93.4V419.4c-.1 51.2-42.1 92.7-93.4 92.6H92.6C41.4 511.9-.1 469.8 0 418.6V92.6C.1 41.4 42.2-.1 93.4 0H419.4c51.2 .1 92.7 42.1 92.6 93.4zM441.6 233.5c0-83.4-83.7-151.3-186.4-151.3s-186.4 67.9-186.4 151.3c0 74.7 66.3 137.4 155.9 149.3c21.8 4.7 19.3 12.7 14.4 42.1c-.8 4.7-3.8 18.4 16.1 10.1s107.3-63.2 146.5-108.2c27-29.7 39.9-59.8 39.9-93.1z"/></svg></a></li>
+    </ul>
+    <p class="copy" data-i18n="copy">© 禾園鳥坊</p>
+  </div>
+</footer>
+
+<!-- 【小幫手按鈕】這個 href 是全站 LINE 連結的來源，帶 data-line 的按鈕（含頁尾 LINE 圖示）會自動跟著換 -->
+<a class="helper" id="helper" href="https://lin.ee/Vwu8NPG" data-line aria-label="LINE">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3C6.5 3 2 6.6 2 11c0 2.5 1.5 4.8 3.8 6.3L5 21l4.2-2.4c.9.2 1.8.3 2.8.3 5.5 0 10-3.6 10-8S17.5 3 12 3z"/><circle cx="8" cy="11" r="1.3" fill="var(--btn-bg)"/><circle cx="12" cy="11" r="1.3" fill="var(--btn-bg)"/><circle cx="16" cy="11" r="1.3" fill="var(--btn-bg)"/></svg>
+  <span data-i18n="helper">問小幫手</span>
+</a>
+
+<script src="care-data.js"></script>
+<script src="care-topics.js"></script>
+<script>
+/* 英文翻譯：中文寫在網頁裡，英文寫在這裡（對應元素上的 data-i18n）。
+   鳥種與文章的英文在 care-data.js、care-topics.js 裡。 */
+var EN = {
+  brand: "Hoyuan Birds", menu: "Menu",
+  nav_home: "Home", nav_birds: "Our Birds", nav_supplies: "Supplies", nav_care: "Bird Care",
+  nav_about: "About Us", nav_gallery: "Gallery", nav_trade: "Import & Export", nav_visit: "Visit Us",
+  follow: "Follow Us", copy: "© Hoyuan Birds", helper: "Ask Us",
+  c_title: "Bird Care",
+  c_lead: "Basic care knowledge, plus a profile for each kind of bird.",
+  tab_species: "By Species", tab_common: "General Care",
+  sp_lead: 'We have sold all of the birds below, but they are not always in stock, so please <a href="#" data-line>message us on LINE</a> first. Tap a bird to see its profile.'
+};
+/* 動態內容的固定文字：[中文, 英文] */
+var T = {
+  back: ['← 回到鳥種列表', '← Back to species list'],
+  sold: ['本店曾販售', 'Sold at our shop before'],
+  soldNote: ['不一定隨時有貨，請先 <a href="#" data-line>LINE 詢問</a>', 'Not always in stock — please <a href="#" data-line>ask us on LINE</a> first'],
+  basic: ['基本資料', 'Basic Information'],
+  feed: ['飼料建議', 'Feeding Advice'],
+  sources: ['來源', 'Sources'],
+  cites: ['保育等級（CITES）', 'Conservation status (CITES)'],
+  citesTag: ['CITES ', 'CITES '],
+  low: ['資料來源：飼料公司，非獸醫撰寫', 'Source: a bird-food company, not written by a veterinarian'],
+  refs: ['參考來源', 'References'],
+  disc: ['本文為一般照顧資訊，不能取代獸醫診斷。', 'This is general care information and cannot replace a veterinary diagnosis.'],
+  shop: ['本店做法', 'Our shop’s approach'],
+  topics: ['主題', 'Topics'],
+  names: ['英文名：', 'English name: ']
+};
+
+(function () {
+  var lang = 'zh';
+  var TOPIC_ICONS = {
+    beginner: '<svg viewBox="0 0 64 64" aria-hidden="true"><ellipse cx="29" cy="37" rx="16" ry="12"/><circle cx="43" cy="25" r="9"/><polygon points="51,22 59,25.5 51,29"/><polygon points="15,38 3,47 18,45"/><circle class="cut" cx="45.5" cy="23" r="1.8"/><path class="cut-line" d="M20 36 q8 7 18 1"/></svg>',
+    feed: '<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M10 34 h44 a22 17 0 0 1 -44 0z"/><ellipse cx="22" cy="28" rx="3.6" ry="2.4"/><ellipse cx="31" cy="25" rx="3.6" ry="2.4"/><ellipse cx="40" cy="28" rx="3.6" ry="2.4"/><ellipse cx="27" cy="19" rx="3.6" ry="2.4"/><ellipse cx="36" cy="18" rx="3.6" ry="2.4"/></svg>',
+    daily: '<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M32 8 C32 8 15 29 15 40 a17 17 0 0 0 34 0 C49 29 32 8 32 8z"/><path class="cut-line" d="M23 42 a9 9 0 0 0 8 8"/></svg>',
+    health: '<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M32 54 L12 34 a11 11 0 0 1 20 -15 a11 11 0 0 1 20 15z"/><rect class="cut" x="29" y="24" width="6" height="18"/><rect class="cut" x="23" y="30" width="18" height="6"/></svg>',
+    faq: '<svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="25"/><path class="cut-line thick" d="M24.5 26.5 a7.5 7.5 0 1 1 10.5 6.9 c-2 1-3 2.3-3 4.6"/><circle class="cut" cx="32" cy="46" r="3.2"/></svg>'
+  };
+  var BIRD_ICON = '<svg viewBox="0 0 64 64" aria-hidden="true"><ellipse cx="29" cy="37" rx="16" ry="12"/><circle cx="43" cy="25" r="9"/><polygon points="51,22 59,25.5 51,29"/><polygon points="15,38 3,47 18,45"/></svg>';
+  var TOPIC_IDS = ['beginner', 'feed', 'daily', 'health', 'faq'];
+
+  var species = window.CARE_SPECIES || [];
+  var topics = window.CARE_TOPICS || [];
+  var lastTopic = 'beginner';
+  var lastKey = null;
+
+  function $(id) { return document.getElementById(id); }
+  function pick(pair) { return lang === 'en' ? pair[1] : pair[0]; }
+  function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+  function link(url, text) { return url ? '<a href="' + esc(url) + '" target="_blank" rel="noopener">' + text + '</a>' : text; }
+
+  /* ---------- 共用：語言、LINE、選單（和 index.html 一致） ---------- */
+  var nodes = document.querySelectorAll('[data-i18n]');
+  nodes.forEach(function (el) { el.dataset.zh = el.innerHTML; });
+
+  function syncLine() {
+    var url = $('helper').getAttribute('href');
+    document.querySelectorAll('[data-line]').forEach(function (a) {
+      a.setAttribute('href', url);
+      if (url !== '#') { a.target = '_blank'; a.rel = 'noopener'; }
+    });
+  }
+
+  function setLang(l) {
+    lang = l;
+    nodes.forEach(function (el) {
+      var k = el.dataset.i18n;
+      el.innerHTML = (l === 'en' && EN[k] !== undefined) ? EN[k] : el.dataset.zh;
+    });
+    document.documentElement.lang = l === 'en' ? 'en' : 'zh-Hant-TW';
+    document.title = l === 'en' ? 'Bird Care | Hoyuan Birds' : '養鳥知識｜禾園鳥坊';
+    var btn = $('lang');
+    $('lang-to').textContent = l === 'en' ? '中文' : 'English';
+    btn.querySelector('.lang-hint').textContent = l === 'en' ? 'Language' : '語言';
+    btn.setAttribute('aria-label', l === 'en' ? '切換成中文' : 'Switch to English');
+    try { localStorage.setItem('lang', l); } catch (e) {}
+    render(true);
+  }
+  $('lang').addEventListener('click', function () { setLang(lang === 'en' ? 'zh' : 'en'); });
+
+  var header = $('top'), menuBtn = $('menu-btn');
+  function setMenu(open) {
+    header.classList.toggle('open', open);
+    menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+  menuBtn.addEventListener('click', function () { setMenu(!header.classList.contains('open')); });
+  $('site-nav').addEventListener('click', function (e) { if (e.target.closest('a')) setMenu(false); });
+  document.addEventListener('click', function (e) { if (!header.contains(e.target)) setMenu(false); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setMenu(false); });
+  window.matchMedia('(min-width: 1021px)').addEventListener('change', function () { setMenu(false); });
+
+  /* ---------- 網址 # 路由 ----------
+     #species          依鳥種查詢（卡片清單）
+     #species/<id>     某一種鳥的小檔案
+     #beginner #feed #daily #health #faq   共通照顧須知的主題
+     #common           共通照顧須知（等同上次看的主題） */
+  function route() {
+    var h = '';
+    try { h = decodeURIComponent(location.hash.replace(/^#/, '')); } catch (e) {}
+    if (h.indexOf('species/') === 0) {
+      var id = h.slice(8);
+      if (species.some(function (s) { return s.id === id; })) return { tab: 'species', id: id };
+      return { tab: 'species' };
+    }
+    if (h === 'common') return { tab: 'common', topic: lastTopic, fix: true };
+    if (TOPIC_IDS.indexOf(h) >= 0) return { tab: 'common', topic: h };
+    return { tab: 'species' };
+  }
+  function go(hash) { if (location.hash === '#' + hash) render(false); else location.hash = hash; }
+
+  /* ---------- 版面 ---------- */
+  function renderTabs(r) {
+    ['species', 'common'].forEach(function (t) {
+      var sel = r.tab === t;
+      $('tab-' + t).setAttribute('aria-selected', sel ? 'true' : 'false');
+      $('tab-' + t).tabIndex = sel ? 0 : -1;
+      $('panel-' + t).hidden = !sel;
+    });
+  }
+
+  function citesCls(c) { return c.level === 'I' ? 'c-pill i' : 'c-pill'; }
+
+  function renderList() {
+    $('sp-list').hidden = false; $('sp-detail').hidden = true;
+    $('sp-grid').innerHTML = species.map(function (s) {
+      return '<button type="button" class="c-card" data-id="' + s.id + '">' +
+        '<span class="c-ico">' + BIRD_ICON + '</span>' +
+        '<span class="c-card-t"><span class="c-name">' + pick(s.name) + '</span><span class="c-mem">' + pick(s.members) + '</span>' +
+        (s.cites.level === 'I' ? '<span class="c-pill i">' + pick(T.citesTag) + pick(s.cites.badge) + '</span>' : '') +
+        '</span></button>';
+    }).join('');
+  }
+
+  function rowsHTML(rows) {
+    return rows.filter(function (r) { return r.v; }).map(function (r) {
+      var src = r.src ? ' <span class="c-st">' + r.src.split(',').map(function (n) { return '[' + n + ']'; }).join('') + '</span>' : '';
+      return '<tr><th scope="row">' + pick(r.k) + '</th><td>' + pick(r.v) + src + '</td></tr>';
+    }).join('');
+  }
+
+  function sourceLine(s) {
+    var org = lang === 'en' ? (s.orgZh ? s.org + ' (owner site)' : s.org) : (s.orgZh || s.org);
+    var by = s.by ? (lang === 'en' ? ', ' : '，') + esc(s.by) : '';
+    return lang === 'en' ? esc(org) + ', “' + link(s.url, esc(s.title)) + '”' + by
+                         : esc(org) + '〈' + link(s.url, esc(s.title)) + '〉' + by;
+  }
+
+  function renderDetail(id) {
+    var s = species.filter(function (x) { return x.id === id; })[0];
+    var c = s.cites, cs = window.CARE_CITES_SRC;
+    var citesRow = '<tr class="' + (c.level === 'I' ? 'cites-i' : '') + '"><th scope="row">' + pick(T.cites) + '</th><td><span class="' + citesCls(c) + '">' +
+      pick(c.badge) + '</span> ' + pick(c.note) + ' <span class="c-st">[CITES]</span></td></tr>';
+    var srcs = s.sources.map(function (x, i) { return '<li><span class="c-n">[' + (i + 1) + ']</span>' + sourceLine(x) + '</li>'; }).join('') +
+      '<li><span class="c-n">[CITES]</span>' + (lang === 'en' ? 'CITES, “' + link(cs.url, esc(cs.title)) + '” (' + cs.note[1] + ')'
+                                                 : 'CITES 官方〈' + link(cs.url, esc(cs.title)) + '〉（' + cs.note[0] + '）') + '</li>';
+    var el = $('sp-detail');
+    el.innerHTML =
+      '<button type="button" class="c-back" data-back>' + pick(T.back) + '</button>' +
+      '<h2 class="c-dname" id="dname" tabindex="-1">' + pick(s.name) + '</h2>' +
+      (c.level === 'I' ? '<p style="margin:0 0 8px"><span class="c-pill i">' + pick(T.citesTag) + pick(c.badge) + '</span></p>' : '') +
+      '<p class="c-names">' + pick(T.names) + pick(s.names) + '</p>' +
+      '<p class="c-sold"><span class="c-tag">' + pick(T.sold) + '</span><span>' + pick(T.soldNote) + '</span></p>' +
+      '<h3>' + pick(T.basic) + '</h3><div class="c-tablewrap"><table class="c-table"><tbody>' + rowsHTML(s.profile) + citesRow + '</tbody></table></div>' +
+      '<h3>' + pick(T.feed) + '</h3><div class="c-tablewrap"><table class="c-table"><tbody>' + rowsHTML(s.feed) + '</tbody></table></div>' +
+      '<h3>' + pick(T.sources) + '</h3>' +
+      (s.lowSource ? '<p class="c-warn">' + pick(T.low) + '</p>' : '') +
+      '<ul class="c-srclist">' + srcs + '</ul>' +
+      '<p class="c-disc">' + pick(T.disc) + '</p>' +
+      '<button type="button" class="c-back bottom" data-back>' + pick(T.back) + '</button>';
+    $('sp-list').hidden = true; el.hidden = false;
+  }
+
+  function renderTopicButtons(cur) {
+    $('c-topics').innerHTML = topics.map(function (t) {
+      return '<button type="button" class="c-topic" data-topic="' + t.id + '" aria-pressed="' + (t.id === cur ? 'true' : 'false') + '">' +
+        TOPIC_ICONS[t.id] + '<span>' + pick(t.title) + '</span></button>';
+    }).join('');
+  }
+
+  function blockHTML(b) {
+    function li(a) { return a.map(function (x) { return '<li>' + pick(x) + '</li>'; }).join(''); }
+    if (b.p) return '<p>' + pick(b.p) + '</p>';
+    if (b.ul) return '<ul>' + li(b.ul) + '</ul>';
+    if (b.ol) return '<ol>' + li(b.ol) + '</ol>';
+    if (b.shop) return '<div class="c-shop"><b class="c-shop-label">' + pick(T.shop) + '</b><p class="c-shop-body">' + pick(b.shop) + '</p></div>';
+    return '';
+  }
+
+  function refHTML(r) {
+    if (r.note) return '<li>' + pick(r.note) + '</li>';
+    if (r.plain) return '<li>' + pick(r.plain) + '</li>';
+    var en = lang === 'en';
+    var org = pick(r.o);
+    var t = en ? '“' + link(r.url, esc(r.t)) + '”' : '〈' + link(r.url, esc(r.t)) + '〉';
+    var use = r.u ? pick(r.u) + (en ? ': ' : '：') : '';
+    var mark = r.m ? (en ? '[' + r.m + '] ' : '〔' + r.m + '〕') : '';
+    var x = r.x ? (en ? ' ' : '') + pick(r.x) : '';
+    return '<li>' + mark + use + esc(org) + (en ? ', ' : '') + t + x + '</li>';
+  }
+
+  function renderTopic(id) {
+    var t = topics.filter(function (x) { return x.id === id; })[0];
+    renderTopicButtons(id);
+    var html = '<div class="c-head"><h2>' + pick(t.title) + '</h2><p>' + pick(t.sub) + '</p></div>';
+    if (t.intro) html += '<p class="c-intro">' + pick(t.intro) + '</p>';
+    html += t.items.map(function (it) {
+      return '<details class="c-q"><summary>' + pick(it.q) + '</summary><div class="c-a">' + it.body.map(blockHTML).join('') + '</div></details>';
+    }).join('');
+    if (t.speciesLink) {
+      html += '<a class="c-q" href="#species"><span>' + pick(t.speciesLink.q) + '<small>' + pick(t.speciesLink.hint) + '</small></span></a>';
+    }
+    html += '<details class="c-refs"><summary>' + pick(T.refs) + '</summary><ul>' + t.refs.map(refHTML).join('') + '</ul></details>';
+    html += '<p class="c-disc">' + pick(T.disc) + (t.extraDisclaimer ? ' ' + pick(t.extraDisclaimer) : '') + '</p>';
+    $('topic-body').innerHTML = html;
+  }
+
+  function render(keepScroll) {
+    var r = route();
+    if (r.fix) history.replaceState(null, '', '#' + r.topic);
+    renderTabs(r);
+    var key;
+    if (r.tab === 'species') {
+      if (r.id) { renderDetail(r.id); key = 'detail'; } else { renderList(); key = 'list'; }
+    } else {
+      lastTopic = r.topic; renderTopic(r.topic); key = 'topic';
+    }
+    syncLine();
+    // 進入或離開小檔案時，捲回分頁列，從頭開始看
+    if (!keepScroll && lastKey !== null && key !== lastKey && (key === 'detail' || lastKey === 'detail')) {
+      $('c-tabs').scrollIntoView();
+      if (key === 'detail') { var h = $('dname'); if (h) h.focus({ preventScroll: true }); }
+    }
+    lastKey = key;
+  }
+
+  /* ---------- 事件 ---------- */
+  $('tab-species').addEventListener('click', function () { go('species'); });
+  $('tab-common').addEventListener('click', function () { go(lastTopic); });
+  $('c-tabs').addEventListener('keydown', function (e) {
+    if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+    var r = route();
+    var next = r.tab === 'species' ? 'common' : 'species';
+    go(next === 'species' ? 'species' : lastTopic);
+    $('tab-' + next).focus();
+  });
+  $('sp-grid').addEventListener('click', function (e) {
+    var b = e.target.closest('.c-card'); if (b) go('species/' + b.dataset.id);
+  });
+  $('sp-detail').addEventListener('click', function (e) {
+    if (e.target.closest('[data-back]')) go('species');
+  });
+  $('c-topics').addEventListener('click', function (e) {
+    var b = e.target.closest('.c-topic'); if (b) go(b.dataset.topic);
+  });
+  window.addEventListener('hashchange', function () { render(false); });
+
+  // 啟動：?lang=en 直接開英文版，否則看上次選的語言
+  var start = 'zh';
+  var q = new URLSearchParams(location.search).get('lang');
+  if (q === 'en' || q === 'zh') start = q;
+  else { try { if (localStorage.getItem('lang') === 'en') start = 'en'; } catch (e) {} }
+  setLang(start);
+})();
+</script>
+</body>
+</html>
